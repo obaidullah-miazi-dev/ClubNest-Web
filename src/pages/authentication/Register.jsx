@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
-import { Camera, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
-import Button from '../../components/Button';
-import GoogleLogin from '../../components/GoogleLogin';
+import React, { useContext, useState } from "react";
+import { Link } from "react-router";
+import { Camera, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import Button from "../../components/Button";
+import GoogleLogin from "../../components/GoogleLogin";
+import { useForm } from "react-hook-form";
+import { imageUpload } from "../../utils";
+import { AuthContext } from "../../provider/authProvider";
 
 const Register = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const { createUser, updateUser, setLoading } = useContext(AuthContext);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -17,6 +21,40 @@ const Register = () => {
     }
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const handleRegister = async (data) => {
+    const imageUrl = await imageUpload(profilePic);
+
+    // email password registration 
+    createUser(data.email, data.password)
+      .then((res) => {
+        console.log(res.user);
+
+        const userProfile = {
+          displayName: data.name,
+          photoURL: imageUrl,
+        };
+
+        // update profile 
+        updateUser(userProfile)
+          .then(() => {
+            alert("registration successfull");
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      })
+      .catch((err) => {
+        alert(err);
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <div className="min-h-screen flex">
       {/*  Register Form */}
@@ -24,16 +62,25 @@ const Register = () => {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
-            <p className="mt-2 text-gray-600">Join ClubNest and build your community</p>
+            <p className="mt-2 text-gray-600">
+              Join ClubNest and build your community
+            </p>
           </div>
 
-          <form className="mt-8 space-y-6">
+          <form
+            className="mt-8 space-y-6"
+            onSubmit={handleSubmit(handleRegister)}
+          >
             {/* Profile Photo Upload in imagebb */}
             <div className="flex flex-col items-center">
               <div className="relative">
                 <div className="w-28 h-28 rounded-full overflow-hidden bg-gray-100 border-4 border-dashed border-gray-300">
                   {previewUrl ? (
-                    <img src={previewUrl} alt="Profile" className="w-full h-full object-cover" />
+                    <img
+                      src={previewUrl}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-200">
                       <User className="w-12 h-12 text-gray-400" />
@@ -54,65 +101,90 @@ const Register = () => {
                 id="profile-pic"
                 accept="image/*"
                 onChange={handleImageChange}
+                required
                 className="hidden"
               />
-              <p className="mt-4 text-sm text-gray-500">Click to upload profile photo</p>
+              <p className="mt-4 text-sm text-gray-500">
+                Click to upload profile photo
+              </p>
             </div>
 
             {/* Full Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Full Name
               </label>
               <div className="mt-2 relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <User className="absolute left-4 top-6 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
                   id="name"
-                  required
+                  {...register("name", { required: true })}
                   placeholder="John Doe"
                   className="pl-12 pr-4 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                 />
+                {errors.name?.type === "required" && (
+                  <p className="text-red-500">Name Required</p>
+                )}
               </div>
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <div className="mt-2 relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-6 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
-                  required
+                  {...register("email", { required: true })}
                   placeholder="you@example.com"
                   className="pl-12 pr-4 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                 />
+                {errors.email?.type === "required" && (
+                  <p className="text-red-500">Email Required</p>
+                )}
               </div>
             </div>
 
             {/* Password  */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-2 relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-4 top-6 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
-                  required
+                  {...register("password", { required: true })}
                   placeholder="Create a strong password"
                   className="pl-12 pr-14 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                 />
+                {errors.password?.type === "required" && (
+                  <p className="text-red-500">Password Required</p>
+                )}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  className="absolute right-4 top-6 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -133,8 +205,11 @@ const Register = () => {
             <GoogleLogin />
 
             <p className="text-center text-sm text-gray-600">
-              Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-main hover:text-main/80 transition">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-semibold text-main hover:text-main/80 transition"
+              >
                 Log In
               </Link>
             </p>
@@ -143,7 +218,7 @@ const Register = () => {
       </div>
 
       {/* Right Side */}
-      <div className="hidden lg:block w-1/2 bg-gradient-to-br from-main to-blue-600 relative overflow-hidden">
+      <div className="hidden lg:block w-1/2 bg-linear-to-br from-main to-blue-600 relative overflow-hidden">
         <img
           src="https://i.ibb.co.com/215F8LYG/bg-gradient.jpg"
           alt="ClubNest Community"
@@ -152,10 +227,12 @@ const Register = () => {
         <div className="absolute inset-0 bg-black/20" />
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-12">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">ClubNest</h1>
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
+            ClubNest
+          </h1>
           <p className="text-lg md:text-xl leading-relaxed max-w-lg">
-            Your Community, Connected. Discover, manage, and grow with the ultimate platform
-            for local clubs and events.
+            Your Community, Connected. Discover, manage, and grow with the
+            ultimate platform for local clubs and events.
           </p>
         </div>
       </div>
