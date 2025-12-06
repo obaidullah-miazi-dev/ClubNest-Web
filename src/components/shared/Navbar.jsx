@@ -15,13 +15,14 @@ import { AuthContext } from "../../provider/authProvider";
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
 
-  // const handleLogout = () => {
-  //   logout();
-  //   setIsDropdownOpen(false);
-  //   setIsMobileMenuOpen(false);
-  // };
+  const handleLogout = () => {
+    alert('are you sure')
+    logOut();
+    setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+  };
 
   const Navlinks = (
     <>
@@ -113,7 +114,7 @@ const Navbar = () => {
                     </Link>
                     <hr className="my-2 border-gray-100" />
                     <button
-                      // onClick={handleLogout}
+                      onClick={handleLogout}
                       className="flex items-center gap-3 px-5 py-3 hover:bg-red-50 text-red-600 w-full text-left transition"
                     >
                       <LogOut className="w-5 h-5" />
@@ -176,7 +177,7 @@ const Navbar = () => {
                     </Button>
                   </Link>
                   <Button
-                    // onClick={handleLogout}
+                    onClick={handleLogout}
                     className="w-full rounded-full bg-red-500 hover:bg-red-600 text-white"
                   >
                     Logout
