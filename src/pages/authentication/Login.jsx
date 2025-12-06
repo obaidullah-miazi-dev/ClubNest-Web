@@ -1,10 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router';
-import Button from '../../components/Button';
+import React, { useState } from "react";
+import { Link } from "react-router";
+import Button from "../../components/Button";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import GoogleLogin from "../../components/GoogleLogin";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex py-8 md:py-0">
       {/* Left Side*/}
       <div className="hidden lg:block w-1/2 bg-linear-to-br from-main to-blue-600 relative overflow-hidden">
         <img
@@ -12,13 +15,12 @@ const Login = () => {
           alt="ClubSphere Community"
           className="absolute inset-0 w-full h-full object-cover opacity-90"
         />
-        
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-12">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">Club Nest</h1>
           <p className="text-lg md:text-xl leading-relaxed max-w-md">
-            Your Community, Connected. Discover, manage, and grow with the ultimate platform
-            for local clubs and events.
+            Your Community, Connected. Discover, manage, and grow with the
+            ultimate platform for local clubs and events.
           </p>
         </div>
       </div>
@@ -36,32 +38,47 @@ const Login = () => {
           <form className="mt-8 space-y-6">
             <div className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <div className="mt-2 relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
                   required
-                  placeholder="Enter your email address"
-                  className="mt-2 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+                  placeholder="you@example.com"
+                  className="pl-12 pr-4 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                 />
               </div>
+            </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <div className="mt-2 relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     required
-                    placeholder="Enter your password"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent pr-12"
+                    placeholder="Create a strong password"
+                    className="pl-12 pr-14 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                   />
-                  <button type="button" className="absolute inset-y-0 right-0 pr-4 flex items-center">
-                    Eye Icon
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -90,16 +107,14 @@ const Login = () => {
               </div>
             </div>
 
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 rounded-xl hover:bg-gray-100 transition"
-            >
-              <span className="text-gray-700 font-medium">Sign in with Google</span>
-            </button>
+            <GoogleLogin />
 
             <p className="text-center text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/register" className="font-semibold text-main/95 hover:text-main">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="font-semibold text-main/95 hover:text-main"
+              >
                 Sign Up
               </Link>
             </p>
