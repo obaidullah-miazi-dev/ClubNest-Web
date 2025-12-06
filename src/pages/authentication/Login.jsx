@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router";
 import Button from "../../components/Button";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import GoogleLogin from "../../components/GoogleLogin";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../provider/authProvider";
 
 const Login = () => {
+    const {signInUser,setLoading} = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false);
+  const {register,handleSubmit,formState:{errors}} = useForm()
+
+  const handleLogin = (data)=>{
+    signInUser(data.email,data.password)
+    .then(res=>{
+        console.log(res.user)
+    })
+    .catch(err=>{
+        alert(err)
+    })
+    .finally(()=>setLoading(false))
+  }
   return (
     <div className="min-h-screen flex py-8 md:py-0">
       {/* Left Side*/}
@@ -35,21 +50,24 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleLogin)}>
             <div className="space-y-5">
               <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <div className="mt-2 relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-6 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
-                  required
+                  {...register('email',{required:true})}
                   placeholder="you@example.com"
                   className="pl-12 pr-4 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                 />
+                {errors?.email?.type === 'required' && (
+                    <p className="text-red-500 text-sm">Email Required</p>
+                )}
               </div>
             </div>
 
@@ -61,18 +79,18 @@ const Login = () => {
                   Password
                 </label>
                 <div className="mt-2 relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Lock className="absolute left-4 top-6 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
-                    required
-                    placeholder="Create a strong password"
+                    {...register('password',{required:true})}
+                    placeholder="Your Password"
                     className="pl-12 pr-14 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    className="absolute right-4 top-6 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -80,6 +98,9 @@ const Login = () => {
                       <Eye className="w-5 h-5" />
                     )}
                   </button>
+                  {errors?.password?.type === 'required' && (
+                    <p className="text-red-500 text-sm">Password Required</p>
+                )}
                 </div>
               </div>
             </div>
