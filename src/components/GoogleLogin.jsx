@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../provider/authProvider';
 
 const GoogleLogin = () => {
+    const {googleLogIn,setLoading} = useContext(AuthContext)
+    const handleGoogleLogin = ()=>{
+        googleLogIn()
+        .then(res=>{
+            if(res.user.email){
+                alert('login successfully')
+            }
+        })
+        .catch(err=>{
+            alert(err)
+        })
+        .finally(()=>setLoading(false))
+    }
     return (
-        <button
+        <button onClick={handleGoogleLogin}
               type="button"
               className="w-full flex items-center justify-center gap-3 py-3.5 border border-gray-300 rounded-xl hover:bg-gray-100 transition font-medium"
             >
