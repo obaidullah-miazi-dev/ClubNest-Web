@@ -48,6 +48,14 @@ const Navbar = () => {
       >
         <li>Events</li>
       </NavLink>
+
+      <NavLink
+        to="/becomeClubManager"
+        className="hover:text-main transition"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <li>Become Club Manager</li>
+      </NavLink>
     </>
   );
 

@@ -6,6 +6,7 @@ import Register from "../pages/authentication/Register";
 import MyProfile from "../pages/MyProfile";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/dashboard/DashboardHome";
+import BecomeClubManager from "../pages/BecomeClubManager";
 
 export const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
             {
                 path:'/myProfile',
                 Component: MyProfile
+            },
+            {
+                path: '/becomeClubManager',
+                Component: BecomeClubManager
             }
         ] 
     },

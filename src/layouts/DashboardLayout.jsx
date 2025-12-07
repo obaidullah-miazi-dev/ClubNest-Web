@@ -128,6 +128,9 @@ const handleLogout = () => {
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+
+
+
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
             {/* List item */}
@@ -153,6 +156,9 @@ const handleLogout = () => {
                 <span className="is-drawer-close:hidden">Homepage</span>
               </button>
             </li>
+
+
+            
 
             {/* List item */}
             <li>
