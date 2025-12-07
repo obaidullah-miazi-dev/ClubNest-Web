@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { AuthContext } from "../provider/authProvider";
 import {
   ChevronDown,
   Grid2x2Plus,
+  Layers,
   LayoutDashboard,
   LogOut,
   User,
@@ -185,12 +187,27 @@ const DashboardLayout = () => {
                 <NavLink to="create-club">
                   <li>
                     <button
-                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="Create Club"
                     >
                       <Grid2x2Plus size={18}/>
                       <span className="is-drawer-close:hidden">
                         Create Club
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+
+
+                <NavLink to="my-clubs">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                      data-tip="My Clubs"
+                    >
+                      <Layers size={18} />
+                      <span className="is-drawer-close:hidden">
+                        My Clubs
                       </span>
                     </button>
                   </li>
