@@ -24,7 +24,8 @@ const BecomeManager = () => {
 
  const handleSubmitApplication = (data)=>{
     console.log(data)
-    axiosSecure.post('/clubManager',data)
+    const clubManagerData = {...data,photoURL:user?.photoURL}
+    axiosSecure.post('/clubManager',clubManagerData)
     .then(res=>{
         console.log(res.data)
         if(res.data.insertedId){

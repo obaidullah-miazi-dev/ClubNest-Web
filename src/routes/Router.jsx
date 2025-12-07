@@ -7,6 +7,7 @@ import MyProfile from "../pages/MyProfile";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import BecomeClubManager from "../pages/BecomeClubManager";
+import ClubManagerApproval from "../pages/dashboard/admin/ClubManagerApproval";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 Component: DashboardHome
+            },
+            {
+                path: 'approve-club-manager',
+                Component: ClubManagerApproval
             }
         ]
     }
