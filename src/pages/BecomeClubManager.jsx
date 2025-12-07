@@ -27,7 +27,10 @@ const BecomeManager = () => {
     const clubManagerData = {...data,photoURL:user?.photoURL}
     axiosSecure.post('/clubManager',clubManagerData)
     .then(res=>{
-        console.log(res.data)
+        console.log(res.data.message)
+        if(res.data.message){
+            alert(`${res.data.message}`)
+        }
         if(res.data.insertedId){
             alert('request successfull')
             reset()
