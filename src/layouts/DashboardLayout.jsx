@@ -3,17 +3,21 @@ import { Link, NavLink, Outlet } from "react-router";
 import { AuthContext } from "../provider/authProvider";
 import {
   ChevronDown,
+  Grid2x2Plus,
   LayoutDashboard,
   LogOut,
   User,
   UserPlus,
 } from "lucide-react";
 import logo from "../assets/ClubNest-logo.png";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
+  const { role } = useRole();
+  console.log(role);
 
   const handleLogout = () => {
     alert("are you sure");
@@ -155,20 +159,44 @@ const DashboardLayout = () => {
               </button>
             </li>
 
-            {/* club manager approval  */}
-            <NavLink to='approve-club-manager'>
-              <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Approve Club Manager"
-                >
-                  <UserPlus size={18}/>
-                  <span className="is-drawer-close:hidden">
-                    Approve Club Manager
-                  </span>
-                </button>
-              </li>
-            </NavLink>
+            {/* admin only links */}
+            {role === "admin" && (
+              <>
+                {/* club manager approval  */}
+                <NavLink to="approve-club-manager">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="Approve Club Manager"
+                    >
+                      <UserPlus size={18} />
+                      <span className="is-drawer-close:hidden">
+                        Approve Club Manager
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+              </>
+            )}
+
+            {/* club manager only links  */}
+            {role === "Club-Manager" && (
+              <>
+                <NavLink to="create-club">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="Create Club"
+                    >
+                      <Grid2x2Plus size={18}/>
+                      <span className="is-drawer-close:hidden">
+                        Create Club
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+              </>
+            )}
 
             {/* List item */}
             <li>
