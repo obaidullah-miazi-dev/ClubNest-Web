@@ -10,7 +10,7 @@ import {
   DollarSign,
   Eye,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Link } from "react-router";
 
@@ -24,6 +24,31 @@ const ClubApprovalList = () => {
       return res.data;
     },
   });
+
+  const queryClient = useQueryClient();
+  const { mutate: updateStatus } = useMutation({
+    mutationFn: async ({ id, updateInfo }) => {
+      const res = await axiosSecure.patch(`/clubStatus/${id}`, updateInfo);
+      return res.data;
+    },
+    onSuccess: () => {
+      alert("status updated");
+      queryClient.invalidateQueries(["allClubs"]);
+    },
+  });
+
+  const handleUpdateStatus = (id, status) => {
+    const updateInfo = { status: status };
+    updateStatus({ id, updateInfo });
+  };
+
+  const handleApprove = (id) => {
+    handleUpdateStatus(id, "approved");
+  };
+
+  const handleReject = (id) => {
+    handleUpdateStatus(id, "rejected");
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -170,10 +195,16 @@ const ClubApprovalList = () => {
 
                     {/* status */}
                     <td className="px-6 py-6">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <span className="font-medium">{club.status}</span>
-                        </div>
+                      <div
+                        className={`flex items-center justify-center py-0.5 rounded-full ${
+                          club.status === "approved"
+                            ? "bg-green-50 text-green-600"
+                            : club.status === "pending"
+                            ? "bg-orange-50 text-orange-600"
+                            : "bg-red-50 text-red-600"
+                        }`}
+                      >
+                        <span className="font-medium">{club.status}</span>
                       </div>
                     </td>
 
@@ -183,18 +214,25 @@ const ClubApprovalList = () => {
                         {/* View Details */}
                         <Link
                           to={`/clubs/${club._id}`}
+                          title="View Club Details"
                           className="p-3 bg-blue-100 text-blue-700 rounded-xl hover:bg-blue-200 transition group"
                         >
                           <Eye className="w-5 h-5 group-hover:scale-110 transition" />
                         </Link>
 
                         {/* Approve */}
-                        <button className="p-3 bg-green-100 text-green-700 rounded-xl hover:bg-green-200 transition group">
+                        <button
+                          onClick={() => handleApprove(club._id)}
+                          className="p-3 bg-green-100 text-green-700 rounded-xl hover:bg-green-200 transition group"
+                        >
                           <Check className="w-6 h-6 group-hover:scale-110 transition" />
                         </button>
 
                         {/* Reject */}
-                        <button className="p-3 bg-red-100 text-red-700 rounded-xl hover:bg-red-200 transition group">
+                        <button
+                          onClick={() => handleReject(club._id)}
+                          className="p-3 bg-red-100 text-red-700 rounded-xl hover:bg-red-200 transition group"
+                        >
                           <X className="w-6 h-6 group-hover:scale-110 transition" />
                         </button>
                       </div>
