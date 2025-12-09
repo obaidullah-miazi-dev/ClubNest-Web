@@ -38,13 +38,16 @@ const CreateClub = () => {
       clubImage: bannerImage,
       managerEmail: user.email,
       managerName: user.displayName,
+      membersCount: Number(0),
+      eventsCount: Number(0)
     };
-    axiosSecure.post("/addClub", clubData)
+    axiosSecure
+      .post("/addClub", clubData)
       .then((res) => {
         if (res.data.insertedId) {
           alert("club submitted for approval");
           reset();
-          setBannerPreview(null)
+          setBannerPreview(null);
         }
       })
       .catch((err) => {
