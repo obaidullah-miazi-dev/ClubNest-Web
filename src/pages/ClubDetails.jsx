@@ -35,7 +35,7 @@ const ClubDetails = () => {
   const existMembershipData = membershipData?.find(
     (data) => data.clubId == club?._id && data.memberEmail === user.email
   );
-  console.log(existMembershipData);
+  // console.log(existMembershipData);
 
   const { mutate: joinReq } = useMutation({
     mutationFn: async (membershipInfo) => {
@@ -52,10 +52,11 @@ const ClubDetails = () => {
     const membershipData = {
       clubId: club._id,
       clubName: club.clubName,
-      clubImage:club.clubImage,
+      clubImage: club.clubImage,
+      clubFee: club.memberShipFee,
       memberEmail: user.email,
       memberName: user.displayName,
-      memberImage: user.photoURL
+      memberImage: user.photoURL,
     };
     joinReq(membershipData);
   };
@@ -177,7 +178,9 @@ const ClubDetails = () => {
                     community!
                   </p>
                   {existMembershipData ? (
-                    <button className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl cursor-not-allowed shadow-lg">Already Joined</button>
+                    <button className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl cursor-not-allowed shadow-lg">
+                      Already Joined
+                    </button>
                   ) : (
                     <>
                       <button
