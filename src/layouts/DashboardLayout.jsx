@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   User,
+  UserPen,
   UserPlus,
 } from "lucide-react";
 import logo from "../assets/ClubNest-logo.png";
@@ -190,6 +191,22 @@ const DashboardLayout = () => {
                       <Grid2x2Plus size={18} />
                       <span className="is-drawer-close:hidden">
                         Approve Clubs
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+
+
+                {/* manage user list */}
+                <NavLink to="manage-users">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                      data-tip="Manage Users"
+                    >
+                      <UserPen size={18} />
+                      <span className="is-drawer-close:hidden">
+                        Manage Users
                       </span>
                     </button>
                   </li>
