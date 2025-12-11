@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../../provider/authProvider";
 import {
   AlertCircle,
@@ -22,7 +22,34 @@ const MyJoinRequests = () => {
     },
   });
 
-  
+  const queryClient = useQueryClient();
+  const { mutate: payClubFee } = useMutation({
+    mutationFn: async (paymentInfo) => {
+      const res = await axiosSecure.post(
+        "/create-checkout-session",
+        paymentInfo
+      );
+      return res.data.url;
+    },
+    onSuccess: (url) => {
+      window.location.href = url;
+      queryClient.invalidateQueries(["joinReqData"]);
+    },
+  });
+
+  const handlePayment = (data) => {
+    const paymentInfo = {
+      clubFee: data.clubFee,
+      clubName: data.clubName,
+      clubId: data.clubId,
+      memberEmail: data.memberEmail,
+      memberName: data.memberName,
+      memberId: data._id,
+      status: data.status,
+    };
+
+    payClubFee(paymentInfo);
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -34,9 +61,11 @@ const MyJoinRequests = () => {
     });
   };
 
-  const activateClub = joinReqData?.filter(data=> data.status === 'active')
-  const pending = joinReqData?.filter(data=>data.status === 'pendingPayment') 
-  const expiredClub = joinReqData?.filter(data=>data.status === 'expired') 
+  const activateClub = joinReqData?.filter((data) => data.status === "active");
+  const pending = joinReqData?.filter(
+    (data) => data.status === "pendingPayment"
+  );
+  const expiredClub = joinReqData?.filter((data) => data.status === "expired");
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -47,22 +76,29 @@ const MyJoinRequests = () => {
             My Club Join Requests
           </h1>
           <p className="mt-3 text-lg text-gray-600">
-            Track your club membership requests, payment progress, and activation status easily.
+            Track your club membership requests, payment progress, and
+            activation status easily.
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-main">{activateClub?.length || 0}</div>
+            <div className="text-3xl font-bold text-main">
+              {activateClub?.length || 0}
+            </div>
             <p className="text-gray-600 mt-1">Active</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-green-600">{pending?.length || 0}</div>
+            <div className="text-3xl font-bold text-green-600">
+              {pending?.length || 0}
+            </div>
             <p className="text-gray-600 mt-1">Pending</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-orange-600">{expiredClub?.length || 0}</div>
+            <div className="text-3xl font-bold text-orange-600">
+              {expiredClub?.length || 0}
+            </div>
             <p className="text-gray-600 mt-1">expired</p>
           </div>
         </div>
@@ -134,13 +170,19 @@ const MyJoinRequests = () => {
                     <td>
                       <div className="flex justify-center items-center">
                         {reqData.clubFee === 0 ? (
-                          <p className="text-orange-500 font-semibold bg-amber-100 py-1 px-2 rounded-full">pending Join</p>
+                          <p className="text-orange-500 font-semibold bg-amber-100 py-1 px-2 rounded-full">
+                            pending Join
+                          </p>
                         ) : (
                           <>
                             {reqData.status === "pendingPayment" ? (
-                              <p className="text-orange-500 font-semibold bg-amber-100 py-1 px-2 rounded-full">{reqData.status.split("g").join("g ")}</p>
+                              <p className="text-orange-500 font-semibold bg-amber-100 py-1 px-2 rounded-full">
+                                {reqData.status.split("g").join("g ")}
+                              </p>
                             ) : (
-                              <p className="text-green-800 font-semibold bg-green-100 py-1 px-2 rounded-full">{reqData.status}</p>
+                              <p className="text-green-800 font-semibold bg-green-100 py-1 px-2 rounded-full">
+                                {reqData.status}
+                              </p>
                             )}
                           </>
                         )}
@@ -150,9 +192,11 @@ const MyJoinRequests = () => {
                     <td className="px-6 py-5">
                       <div>
                         {reqData.clubFee === 0 ? (
-                          <p>Free</p>
+                          <p className="font-bold text-green-700">Free</p>
                         ) : (
-                          <p>{reqData.clubFee}</p>
+                          <p className="text-main font-bold">
+                            $ {reqData.clubFee}
+                          </p>
                         )}
                       </div>
                     </td>
@@ -164,9 +208,13 @@ const MyJoinRequests = () => {
                           <button className="p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2">
                             <PlusCircle /> Join Now
                           </button>
+                        ) : reqData.status === "active" ? (
+                          <button className="p-3 bg-green-300  font-bold rounded-xl text-black cursor-not-allowed flex justify-center items-center gap-2">
+                            <BadgeDollarSign /> Paid
+                          </button>
                         ) : (
                           <button
-                            // onClick={() => makeAdmin(user)}
+                            onClick={() => handlePayment(reqData)}
                             className="p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2"
                           >
                             <BadgeDollarSign /> Pay Now

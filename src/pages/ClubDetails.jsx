@@ -187,7 +187,7 @@ const ClubDetails = () => {
                         onClick={handleJoinRequest}
                         className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg"
                       >
-                        Join Club — ৳{club?.memberShipFee}
+                        Join Club — $ {club?.memberShipFee}
                       </button>
                     </>
                   )}

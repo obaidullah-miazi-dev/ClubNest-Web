@@ -15,6 +15,7 @@ import ClubApprovalList from "../pages/dashboard/admin/ClubApprovalList";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import Clubs from "../pages/Clubs";
 import MyJoinRequests from "../pages/dashboard/user/MyJoinRequests";
+import PaymentSuccess from "../pages/PaymentSuccess";
 
 export const router = createBrowserRouter([
     {
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
             {
                 path: 'my-join-requests',
                 Component: MyJoinRequests
+            },
+            {
+                path:'payment-success',
+                Component: PaymentSuccess
             }
         ]
     }
