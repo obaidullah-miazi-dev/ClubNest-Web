@@ -1,50 +1,71 @@
-import React, { useContext } from 'react';
-import { MapPin, Calendar, DollarSign, Users, Tag, Mail } from 'lucide-react';
-import useRole from '../hooks/useRole';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router';
-import useAxiosSecure from '../hooks/useAxiosSecure';
-import { AuthContext } from '../provider/authProvider';
+import React, { useContext } from "react";
+import { MapPin, Calendar, DollarSign, Users, Tag, Mail } from "lucide-react";
+import useRole from "../hooks/useRole";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { AuthContext } from "../provider/authProvider";
 
 const ClubDetails = () => {
-  const {id} = useParams()
-  const {role} = useRole()
-  const axiosSecure = useAxiosSecure()
-  const {user} = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { id } = useParams();
+  const { role } = useRole();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const {data} = useQuery({
-    queryKey:['club',id],
-    queryFn: async()=>{
-        const res = await axiosSecure.get(`/clubs/${id}`)
-        return res.data
-    }
-  })
+  const { data } = useQuery({
+    queryKey: ["club", id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/clubs/${id}`);
+      return res.data;
+    },
+  });
+
+  const { data: membershipData } = useQuery({
+    queryKey: ["membershipData"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/membershipGet");
+      return res.data;
+    },
+  });
 
   const club = data?.[0];
+  // console.log(club?._id)
+  // console.log(membershipData)
+  const existMembershipData = membershipData?.find(
+    (data) => data.clubId == club?._id && data.memberEmail === user.email
+  );
+  console.log(existMembershipData);
 
-  const {mutate:joinReq}= useMutation({
-    mutationFn: async(membershipInfo)=>{
-      const res = await axiosSecure.post('/addMembership',membershipInfo)
-      return res.data
+  const { mutate: joinReq } = useMutation({
+    mutationFn: async (membershipInfo) => {
+      const res = await axiosSecure.post("/addMembership", membershipInfo);
+      return res.data;
     },
-    onSuccess:()=>{
-      alert('Your join request has been added.')
-      navigate('/dashboard/my-join-requests')
-    }
-  })
+    onSuccess: () => {
+      alert("Your join request has been added.");
+      navigate("/dashboard/my-join-requests");
+    },
+  });
 
-  const handleJoinRequest = () =>{
-    const membershipData = {clubId:club._id,memberEmail:user.email,memberName:user.displayName}
-    joinReq(membershipData)
-  }
+  const handleJoinRequest = () => {
+    const membershipData = {
+      clubId: club._id,
+      clubName: club.clubName,
+      clubImage:club.clubImage,
+      memberEmail: user.email,
+      memberName: user.displayName,
+      memberImage: user.photoURL
+    };
+    joinReq(membershipData);
+  };
 
   const formatDate = (dateString) => {
-    return new Date(dateString)?.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString)?.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -59,8 +80,6 @@ const ClubDetails = () => {
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
-      
-
         {/* Club Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white">
           <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-2xl">
@@ -73,11 +92,11 @@ const ClubDetails = () => {
             </div>
             <div className="flex items-center gap-2">
               <Users className="w-6 h-6" />
-              <span>{club?.membersCount || '0'} Members</span>
+              <span>{club?.membersCount || "0"} Members</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-6 h-6" />
-              <span>{club?.eventsCount || '0'} Events</span>
+              <span>{club?.eventsCount || "0"} Events</span>
             </div>
           </div>
         </div>
@@ -90,7 +109,9 @@ const ClubDetails = () => {
           <div className="lg:col-span-2 space-y-10">
             {/* About Section */}
             <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">About This Club</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                About This Club
+              </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 {club?.description}
               </p>
@@ -106,12 +127,16 @@ const ClubDetails = () => {
               <div className="bg-linear-to-br from-green-50 to-emerald-100 rounded-2xl p-6 text-center">
                 <DollarSign className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <p className="text-gray-600">Membership Fee</p>
-                <p className="text-3xl font-bold text-green-700">৳{club?.memberShipFee}</p>
+                <p className="text-3xl font-bold text-green-700">
+                  ৳{club?.memberShipFee}
+                </p>
               </div>
               <div className="bg-linear-to-br from-blue-50 to-indigo-100 rounded-2xl p-6 text-center">
                 <Calendar className="w-12 h-12 text-blue-600 mx-auto mb-3" />
                 <p className="text-gray-600">Established</p>
-                <p className="text-xl font-bold text-blue-700">{formatDate(club?.createdAt)}</p>
+                <p className="text-xl font-bold text-blue-700">
+                  {formatDate(club?.createdAt)}
+                </p>
               </div>
             </div>
           </div>
@@ -120,13 +145,17 @@ const ClubDetails = () => {
           <div className="space-y-8">
             {/* Manager Info */}
             <div className="bg-white rounded-3xl shadow-xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Club Manager</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Club Manager
+              </h3>
               <div className="flex items-center gap-5">
                 <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
                   <Users className="w-10 h-10 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900">{club?.managerName}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {club?.managerName}
+                  </p>
                   <p className="text-gray-500">Club Leader</p>
                 </div>
               </div>
@@ -138,24 +167,35 @@ const ClubDetails = () => {
               </div>
             </div>
 
-            {
-                role === 'member' && <>
+            {role === "member" && (
+              <>
                 {/* Join Button */}
-            <div className="bg-linear-to-r from-main to-purple-700 rounded-3xl p-8 text-center text-white shadow-2xl">
-              <h3 className="text-2xl font-bold mb-4">Ready to Join?</h3>
-              <p className="text-lg mb-8 opacity-90">
-                Become a member and get access to exclusive events and community!
-              </p>
-              <button onClick={handleJoinRequest} className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg">
-                Join Club — ৳{club?.memberShipFee}
-              </button>
-              {club?.memberShipFee === 0 && (
-                <p className="mt-4 text-lg font-medium">Free Membership Available!</p>
-              )}
-            </div>
-                
-                </>
-            }
+                <div className="bg-linear-to-r from-main to-purple-700 rounded-3xl p-8 text-center text-white shadow-2xl">
+                  <h3 className="text-2xl font-bold mb-4">Ready to Join?</h3>
+                  <p className="text-lg mb-8 opacity-90">
+                    Become a member and get access to exclusive events and
+                    community!
+                  </p>
+                  {existMembershipData ? (
+                    <button className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl cursor-not-allowed shadow-lg">Already Joined</button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={handleJoinRequest}
+                        className="w-full bg-white text-main font-bold text-xl py-5 rounded-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg"
+                      >
+                        Join Club — ৳{club?.memberShipFee}
+                      </button>
+                    </>
+                  )}
+                  {club?.memberShipFee === 0 && (
+                    <p className="mt-4 text-lg font-medium">
+                      Free Membership Available!
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
