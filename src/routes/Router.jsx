@@ -13,6 +13,7 @@ import MyClub from "../pages/dashboard/clubManager/MyClub";
 import ClubDetails from "../pages/ClubDetails";
 import ClubApprovalList from "../pages/dashboard/admin/ClubApprovalList";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import Clubs from "../pages/Clubs";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
             {
                 path: '/clubs/:id',
                 Component: ClubDetails
+            },
+            {
+                path:'/clubs',
+                Component: Clubs
             }
         ] 
     },

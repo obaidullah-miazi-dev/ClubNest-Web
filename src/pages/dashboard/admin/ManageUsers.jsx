@@ -44,12 +44,12 @@ const ManageUsers = () => {
   if (isPending) return <p>loading......</p>;
 
   // filtered just admin and member only
-  const users = allUsers.filter((user) => user.role !== "Club-Manager");
+  const users = allUsers?.filter((user) => user.role !== "Club-Manager");
 
 
-  const allAdmin = allUsers.filter(user=> user.role === 'admin')
-  const allClubManager = allUsers.filter(user=> user.role === 'Club-Manager')
-  const allMember = allUsers.filter(user=> user.role === 'member')
+  const allAdmin = allUsers?.filter(user=> user.role === 'admin')
+  const allClubManager = allUsers?.filter(user=> user.role === 'Club-Manager')
+  const allMember = allUsers?.filter(user=> user.role === 'member')
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -76,15 +76,15 @@ const ManageUsers = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-main">{allAdmin.length}</div>
+            <div className="text-3xl font-bold text-main">{allAdmin?.length}</div>
             <p className="text-gray-600 mt-1">Admin</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-green-600">{allClubManager.length}</div>
+            <div className="text-3xl font-bold text-green-600">{allClubManager?.length}</div>
             <p className="text-gray-600 mt-1">Club Managers</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-orange-600">{allMember.length}</div>
+            <div className="text-3xl font-bold text-orange-600">{allMember?.length}</div>
             <p className="text-gray-600 mt-1">Members</p>
           </div>
         </div>
