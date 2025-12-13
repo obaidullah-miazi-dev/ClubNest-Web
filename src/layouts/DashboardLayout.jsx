@@ -5,6 +5,7 @@ import { AuthContext } from "../provider/authProvider";
 import {
   ChevronDown,
   Grid2x2Plus,
+  History,
   Layers,
   LayoutDashboard,
   LayoutList,
@@ -261,6 +262,20 @@ const DashboardLayout = () => {
                      <LayoutList size={18} />
                       <span className="is-drawer-close:hidden">
                         My Join Requests
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+
+                <NavLink to="payment-history">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                      data-tip="Payment History"
+                    >
+                     <History size={18} />
+                      <span className="is-drawer-close:hidden">
+                        Payment History
                       </span>
                     </button>
                   </li>
