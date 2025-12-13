@@ -17,82 +17,87 @@ import Clubs from "../pages/Clubs";
 import MyJoinRequests from "../pages/dashboard/user/MyJoinRequests";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentHistory from "../pages/dashboard/user/PaymentHistory";
+import JoinedClubs from "../pages/dashboard/user/JoinedClubs";
 
 export const router = createBrowserRouter([
-    {
-        path:'/',
-        Component:Mainlayouts,
-        children:[
-            {
-                index: true,
-                Component:Home
-            },
-            {
-                path:'/login',
-                Component: Login
-            },
-            {
-                path:'/register',
-                Component: Register
-            },
-            {
-                path:'/myProfile',
-                Component: MyProfile
-            },
-            {
-                path: '/becomeClubManager',
-                Component: BecomeClubManager
-            },
-            {
-                path: '/clubs/:id',
-                Component: ClubDetails
-            },
-            {
-                path:'/clubs',
-                Component: Clubs
-            }
-        ] 
-    },
-    {
-        path: '/dashboard',
-        Component: DashboardLayout,
-        children:[
-            {
-                index: true,
-                Component: DashboardHome
-            },
-            {
-                path: 'approve-club-manager',
-                Component: ClubManagerApproval
-            },
-            {
-                path:'create-club',
-                Component: CreateClub
-            },
-            {
-                path:'my-clubs',
-                Component: MyClub
-            },
-            {
-                path:'approve-clubs',
-                Component: ClubApprovalList
-            },
-            {
-                path: 'manage-users',
-                Component: ManageUsers
-            },
-            {
-                path: 'my-join-requests',
-                Component: MyJoinRequests
-            },
-            {
-                path:'payment-success',
-                Component: PaymentSuccess
-            },
-            {
-                path: 'payment-history',
-                Component: PaymentHistory
-            }
-        ]
-    }
-])
+  {
+    path: "/",
+    Component: Mainlayouts,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
+      {
+        path: "/myProfile",
+        Component: MyProfile,
+      },
+      {
+        path: "/becomeClubManager",
+        Component: BecomeClubManager,
+      },
+      {
+        path: "/clubs/:id",
+        Component: ClubDetails,
+      },
+      {
+        path: "/clubs",
+        Component: Clubs,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    Component: DashboardLayout,
+    children: [
+      {
+        index: true,
+        Component: DashboardHome,
+      },
+      {
+        path: "approve-club-manager",
+        Component: ClubManagerApproval,
+      },
+      {
+        path: "create-club",
+        Component: CreateClub,
+      },
+      {
+        path: "my-clubs",
+        Component: MyClub,
+      },
+      {
+        path: "approve-clubs",
+        Component: ClubApprovalList,
+      },
+      {
+        path: "manage-users",
+        Component: ManageUsers,
+      },
+      {
+        path: "my-join-requests",
+        Component: MyJoinRequests,
+      },
+      {
+        path: "payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "payment-history",
+        Component: PaymentHistory,
+      },
+      {
+        path: "joined-clubs",
+        Component: JoinedClubs,
+      },
+    ],
+  },
+]);

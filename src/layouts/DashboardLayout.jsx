@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import { AuthContext } from "../provider/authProvider";
 import {
   ChevronDown,
+  CopyCheck,
   Grid2x2Plus,
   History,
   Layers,
@@ -262,6 +263,21 @@ const DashboardLayout = () => {
                      <LayoutList size={18} />
                       <span className="is-drawer-close:hidden">
                         My Join Requests
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
+
+
+                <NavLink to="joined-clubs">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                      data-tip="Joined Clubs"
+                    >
+                     <CopyCheck size={18} />
+                      <span className="is-drawer-close:hidden">
+                        Joined Clubs
                       </span>
                     </button>
                   </li>

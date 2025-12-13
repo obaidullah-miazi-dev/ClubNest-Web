@@ -31,9 +31,8 @@ const ClubCard = ({ club }) => {
   const [bannerPreview, setBannerPreview] = useState(null);
   const [bannerPhoto, setBannerPhoto] = useState();
 
-  const Location = useLocation()
-  console.log(Location.pathname);
-
+  const Location = useLocation();
+  // console.log(Location.pathname);
 
   const categories = [
     "Photography",
@@ -150,23 +149,25 @@ const ClubCard = ({ club }) => {
             alt={clubName}
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 left-4">
-            <span
-              className={`px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 ${
-                statusConfig[status]?.color || "bg-gray-100 text-gray-800"
-              }`}
-            >
-              <StatusIcon className="w-4 h-4" />
-              {status.charAt(0).toUpperCase() + status.slice(1)}
-            </span>
-          </div>
+          {role !== "member" && (
+            <div className="absolute top-4 left-4">
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 ${
+                  statusConfig[status]?.color || "bg-gray-100 text-gray-800"
+                }`}
+              >
+                <StatusIcon className="w-4 h-4" />
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Card Body */}
         <div className="p-6">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{clubName}</h3>
 
-          <p className="text-gray-600 line-clamp-2 mb-4">{description}</p>
+          <p className="text-gray-600 line-clamp-2 mb-4 h-12">{description}</p>
 
           {/* Meta Info */}
           <div className="space-y-3">
@@ -224,41 +225,42 @@ const ClubCard = ({ club }) => {
             </div>
 
             {/* edit delete button display only for club manager */}
-            {
-              Location.pathname === '/' && role === 'Club-Manager' ?
-               <NavLink to={`/clubs/${_id}`} className={`w-full`}>
-                    <button className="bg-green-500 text-white font-semibold py-2 mt-5 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
+            {Location.pathname === "/" && role === "Club-Manager" ? (
+              <NavLink to={`/clubs/${_id}`} className={`w-full`}>
+                <button className="bg-green-500 text-white font-semibold py-2 mt-5 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
+                  {" "}
+                  <Info size={18} /> Details
+                </button>
+              </NavLink>
+            ) : (
+              role === "Club-Manager" && (
+                <>
+                  <div className="flex justify-between items-center gap-2">
+                    <button
+                      onClick={() => handleEdit(_id)}
+                      className="bg-green-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
+                    >
                       {" "}
-                      <Info size={18} /> Details
+                      <Pencil size={18} /> Edit
                     </button>
-                  </NavLink>
-              : role === 'Club-Manager' &&
-              <>
-                <div className="flex justify-between items-center gap-2">
-                  <button
-                    onClick={() => handleEdit(_id)}
-                    className="bg-green-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
-                  >
-                    {" "}
-                    <Pencil size={18} /> Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(_id)}
-                    className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
-                  >
-                    {" "}
-                    <Trash size={18} /> Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(_id)}
+                      className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      {" "}
+                      <Trash size={18} /> Delete
+                    </button>
 
-                  <NavLink to={`/clubs/${_id}`} className={`w-full`}>
-                    <button className="bg-main text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
-                      {" "}
-                      <Info size={18} /> Details
-                    </button>
-                  </NavLink>
-                </div>
-              </>
-            }
+                    <NavLink to={`/clubs/${_id}`} className={`w-full`}>
+                      <button className="bg-main text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
+                        {" "}
+                        <Info size={18} /> Details
+                      </button>
+                    </NavLink>
+                  </div>
+                </>
+              )
+            )}
           </div>
         </div>
       </div>
