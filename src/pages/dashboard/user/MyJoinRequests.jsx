@@ -91,8 +91,11 @@ const MyJoinRequests = () => {
   const pending = joinReqData?.filter(
     (data) => data.status === "pendingPayment"
   );
+
+  const pendingJoin = joinReqData?.filter(
+    (data) => data.status === "pending join"
+  );
   const expiredClub = joinReqData?.filter((data) => data.status === "expired");
-  
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="w-10/12 mx-auto">
@@ -117,7 +120,7 @@ const MyJoinRequests = () => {
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
             <div className="text-3xl font-bold text-green-600">
-              {pending?.length || 0}
+              {pending?.length + pendingJoin?.length || 0}
             </div>
             <p className="text-gray-600 mt-1">Pending</p>
           </div>
@@ -200,7 +203,7 @@ const MyJoinRequests = () => {
                             {reqData.status.split("g").join("g ")}
                           </p>
                         ) : (
-                          <p className={` font-semibold  py-1 px-2.5 rounded-full ${reqData.status === 'pending join' ? 'text-orange-600 bg-amber-100':'bg-green-100 text-green-800'}`}>
+                          <p className={` font-semibold  py-1 px-2.5 rounded-full ${reqData.status === 'pending join' ? 'text-orange-500 bg-amber-100':'bg-green-100 text-green-800'}`}>
                             {reqData.status}
                           </p>
                         )}
@@ -226,7 +229,7 @@ const MyJoinRequests = () => {
                           <button 
                           disabled={reqData?.status === "active"}
                           onClick={()=> handleFreeJoin(reqData)}
-                          className={`p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2 ${reqData.status === 'active' && 'opacity-60 !cursor-not-allowed hover:bg-green-600 hover:text-white'}`}>
+                          className={`p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2 ${reqData.status === 'active' && 'opacity-60 cursor-not-allowed! hover:bg-green-600 hover:text-white'}`}>
                             <PlusCircle /> Join Now
                           </button>
                         ) : reqData.status === "active" ? (
