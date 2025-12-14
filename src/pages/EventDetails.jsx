@@ -10,8 +10,8 @@ import {
   Ticket,
   Music,
   AlertCircle,
+  Check,
 } from "lucide-react";
-import Button from "../components/Button";
 import Loading from "../components/animation/Loading";
 import useRole from "../hooks/useRole";
 import { AuthContext } from "../provider/authProvider";
@@ -34,8 +34,21 @@ const EventDetails = () => {
     },
   });
 
+  const {data:RegisteredEvent}= useQuery({
+    queryKey:['registeredEvents',user.email],
+    queryFn: async()=>{
+      const res = await axiosSecure.get(`/getRegisteredEvents?email=${user.email}`)
+      return res.data 
+    }
+  })
+
+  const existEventRegistration = RegisteredEvent?.find(e=> e.eventId === id)
+  console.log(existEventRegistration?.status)
+
+  console.log(RegisteredEvent)
+
   const event = eventData?.[0];
-  console.log(event);
+  // console.log(event);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -192,7 +205,7 @@ const EventDetails = () => {
                   </p>
                 </div>
 
-                {role === "member" ? (
+                {role === "member" && existEventRegistration?.status !== 'registered' ? (
                   <>
                     <button
                       onClick={handleRegister}
@@ -202,7 +215,7 @@ const EventDetails = () => {
                       Register Now
                     </button>
                   </>
-                ) : (
+                ):existEventRegistration?.status === 'registered'?<p className="w-full py-4 md:text-xl font-bold rounded-2xl bg-main hover:cursor-not-allowed text-white shadow-xl flex items-center justify-center gap-3"> <Check />Already Registered</p> : (
                   <>
                     <p className="font-bold text-xl text-center text-main">
                       Only Club Members Can Register
