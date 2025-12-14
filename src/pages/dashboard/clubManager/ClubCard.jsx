@@ -225,7 +225,7 @@ const ClubCard = ({ club }) => {
             </div>
 
             {/* edit delete button display only for club manager */}
-            {Location.pathname === "/" || Location.pathname === '/clubs' && role === "Club-Manager" ? (
+            {(Location.pathname === "/" || Location.pathname === '/clubs') && role === "Club-Manager" ? (
               <NavLink to={`/clubs/${_id}`} className={`w-full`}>
                 <button className="bg-green-500 text-white font-semibold py-2 mt-5 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                   {" "}
