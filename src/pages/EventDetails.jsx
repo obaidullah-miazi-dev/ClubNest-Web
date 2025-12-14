@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import {
   MapPin,
@@ -13,10 +13,14 @@ import {
 } from "lucide-react";
 import Button from "../components/Button";
 import Loading from "../components/animation/Loading";
+import useRole from "../hooks/useRole";
+import { AuthContext } from "../provider/authProvider";
 
 const EventDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
+  const { role } = useRole();
+  const { user } = useContext(AuthContext);
 
   const {
     data: eventData,
@@ -31,7 +35,7 @@ const EventDetails = () => {
   });
 
   const event = eventData?.[0];
-  console.log(event)
+  console.log(event);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -47,6 +51,27 @@ const EventDetails = () => {
       hour: "numeric",
       minute: "2-digit",
     });
+  };
+  const queryClient = useQueryClient();
+  const { mutate: registerEvent } = useMutation({
+    mutationFn: async (eventData) => {
+      const res = await axiosSecure.post("/addEventRegistration", eventData);
+      return res.data;
+    },
+    onSuccess: () => {
+      alert("event Registration successfully");
+      queryClient.invalidateQueries(["event"]);
+    },
+  });
+
+  const handleRegister = () => {
+    const eventData = {
+      eventId: id,
+      status: "registered",
+      userEmail: user.email,
+      clubId: event.clubId,
+    };
+    registerEvent(eventData);
   };
 
   if (isLoading) {
@@ -138,14 +163,14 @@ const EventDetails = () => {
                 <Users className="w-14 h-14 text-main mx-auto mb-4" />
                 <p className="text-gray-600">Organized By</p>
                 <p className="text-2xl font-bold text-main mt-2">
-                  {event.clubName || 'Club Manager'}
+                  {event.clubName || "Club Manager"}
                 </p>
               </div>
               <div className="bg-linear-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 text-center">
                 <Ticket className="w-14 h-14 text-blue-600 mx-auto mb-4" />
                 <p className="text-gray-600">Registration</p>
                 <p className="text-2xl font-bold text-blue-700 mt-2 capitalize">
-                  Open for Everyone
+                  Open for Members
                 </p>
               </div>
             </div>
@@ -167,10 +192,23 @@ const EventDetails = () => {
                   </p>
                 </div>
 
-                <Button className="w-full py-5 md:text-xl font-bold rounded-2xl bg-main hover:bg-main/90 text-white shadow-xl flex items-center justify-center gap-3 transform hover:scale-105 transition">
-                  <Ticket className="w-7 h-7" />
-                  Register Now
-                </Button>
+                {role === "member" ? (
+                  <>
+                    <button
+                      onClick={handleRegister}
+                      className="w-full py-5 md:text-xl font-bold rounded-2xl bg-main hover:bg-main/90 text-white shadow-xl flex items-center justify-center gap-3 transform hover:scale-105 transition"
+                    >
+                      <Ticket className="w-7 h-7" />
+                      Register Now
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-bold text-xl text-center text-main">
+                      Only Club Members Can Register
+                    </p>
+                  </>
+                )}
 
                 <div className="text-center text-sm text-gray-500">
                   <p>By registering, you agree to our terms and conditions.</p>
