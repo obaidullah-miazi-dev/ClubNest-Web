@@ -24,6 +24,7 @@ const EventCard = ({ event }) => {
     eventImage,
     eventDate,
     clubEmail,
+    _id
   } = event;
 
   const formatDate = (dateString) => {
@@ -130,7 +131,7 @@ const EventCard = ({ event }) => {
                         <Trash size={18} /> Delete
                       </button>
 
-                      <NavLink className={`w-full`}>
+                      <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                         <button className="bg-main text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                           {" "}
                           <Info size={18} /> Details
