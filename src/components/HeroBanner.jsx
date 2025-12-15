@@ -1,11 +1,22 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import { motion } from 'framer-motion';
-import Button from './Button';
-import Container from './Container';
-import bannerVideo from '../assets/banner_video.mp4';
+import React from "react";
+import { motion } from "framer-motion";
+import Button from "./Button";
+import Container from "./Container";
+import bannerVideo from "../assets/banner_video.mp4";
+import { Link, useNavigate } from "react-router";
+import useRole from "../hooks/useRole";
 
 const HeroBanner = () => {
+  const { role } = useRole();
+  const navigate = useNavigate();
+  const createClub = () => {
+    if (role !== "Club-Manager") {
+      navigate("/becomeClubManager");
+    } else {
+      navigate("/dashboard/create-club");
+    }
+  };
   const textVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -13,9 +24,9 @@ const HeroBanner = () => {
       y: 0,
       transition: {
         duration: 1,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const buttonVariants = {
@@ -24,11 +35,11 @@ const HeroBanner = () => {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 1 + i * 0.2,
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    })
+        delay: 1 + i * 0.1,
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    }),
   };
 
   const overlayVariants = {
@@ -37,9 +48,9 @@ const HeroBanner = () => {
       transition: {
         duration: 8,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
@@ -73,7 +84,9 @@ const HeroBanner = () => {
             variants={textVariants}
             className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
           >
-            Find Your People.<br />Fuel Your Passion.
+            Find Your People.
+            <br />
+            Fuel Your Passion.
           </motion.h1>
 
           {/* Subheading */}
@@ -84,8 +97,8 @@ const HeroBanner = () => {
             transition={{ delay: 0.4 }}
             className="text-lg md:text-xl text-gray-200 max-w-2xl mb-12 leading-relaxed"
           >
-            ClubNest is the ultimate platform to discover, join, and manage local clubs 
-            that align with your interests and hobbies.
+            ClubNest is the ultimate platform to discover, join, and manage
+            local clubs that align with your interests and hobbies.
           </motion.p>
 
           {/* Buttons */}
@@ -96,9 +109,11 @@ const HeroBanner = () => {
               animate="visible"
               variants={buttonVariants}
             >
-              <Button className="rounded-full px-10 py-5 text-lg font-semibold border-2 border-main text-white hover:bg-white hover:text-main transition transform hover:scale-105">
-                Join a Club
-              </Button>
+              <Link to="/clubs">
+                <Button className="rounded-full px-10 py-5 text-lg font-semibold border-2 border-main text-white hover:bg-white hover:text-main transition transform hover:scale-105">
+                  Join a Club
+                </Button>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -107,9 +122,12 @@ const HeroBanner = () => {
               animate="visible"
               variants={buttonVariants}
             >
-              <Button className="rounded-full bg-white/20 px-10 py-5 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition text-lg">
+              <button
+                onClick={createClub}
+                className="rounded-full text-white font-semibold bg-white/20 px-10 py-5 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition text-lg cursor-pointer"
+              >
                 Create a Club
-              </Button>
+              </button>
             </motion.div>
           </div>
         </div>

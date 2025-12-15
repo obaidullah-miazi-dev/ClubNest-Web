@@ -127,7 +127,7 @@ const BecomeManager = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
-            className="bg-gradient-to-r from-main to-purple-700 p-8 text-white"
+            className="bg-linear-to-r from-main to-purple-700 p-8 text-white"
           >
             <h2 className="text-2xl font-bold">Manager Application</h2>
             <p className="opacity-90 mt-1">One step away from leading communities</p>
