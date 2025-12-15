@@ -41,12 +41,23 @@ const Navbar = () => {
       >
         <li>Clubs</li>
       </NavLink>
+
+
       <NavLink
         to="/events"
         className="hover:text-main transition"
         onClick={() => setIsMobileMenuOpen(false)}
       >
         <li>Events</li>
+      </NavLink>
+
+
+      <NavLink
+        to="/aboutUs"
+        className="hover:text-main transition"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <li>About Us</li>
       </NavLink>
 
       <NavLink
