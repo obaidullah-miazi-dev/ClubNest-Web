@@ -54,11 +54,11 @@ const EventDetails = () => {
   });
 
   const existEventRegistration = RegisteredEvent?.find((e) => e.eventId === id);
-
+  console.log(existEventRegistration?.status);
   const event = eventData?.[0];
 
   const membershipDataClubIds = membershipData?.map((data) => data.clubId);
-  console.log(membershipDataClubIds);
+  // console.log(membershipDataClubIds);
 
   const isJoinedClub = membershipDataClubIds?.includes(event?.clubId);
 
@@ -223,28 +223,24 @@ const EventDetails = () => {
                 </div>
 
                 {role === "member" &&
-                existEventRegistration?.status !== "registered" ? (
-                  <>
-                    <button
-                      onClick={handleRegister}
-                      className="w-full py-5 md:text-xl font-bold rounded-2xl bg-main hover:bg-main/90 text-white shadow-xl flex items-center justify-center gap-3 transform hover:scale-105 transition"
-                    >
-                      <Ticket className="w-7 h-7" />
-                      Register Now
-                    </button>
-                  </>
+                (!existEventRegistration ||
+                  existEventRegistration?.status === "cancelled") ? (
+                  <button
+                    onClick={handleRegister}
+                    className="w-full py-5 md:text-xl font-bold rounded-2xl bg-main hover:bg-main/90 text-white shadow-xl flex items-center justify-center gap-3 transform hover:scale-105 transition"
+                  >
+                    <Ticket className="w-7 h-7" />
+                    Register Now
+                  </button>
                 ) : existEventRegistration?.status === "registered" ? (
-                  <p className="w-full py-4 md:text-xl font-bold rounded-2xl bg-main hover:cursor-not-allowed text-white shadow-xl flex items-center justify-center gap-3">
-                    {" "}
+                  <p className="w-full py-4 md:text-xl font-bold rounded-2xl bg-main cursor-not-allowed text-white shadow-xl flex items-center justify-center gap-3">
                     <Check />
                     Already Registered
                   </p>
                 ) : (
-                  <>
-                    <p className="font-bold text-xl text-center text-main">
-                      Only Club Members Can Register
-                    </p>
-                  </>
+                  <p className="font-bold text-xl text-center text-main">
+                    Only Club Members Can Register
+                  </p>
                 )}
 
                 <div className="text-center text-sm text-gray-500">

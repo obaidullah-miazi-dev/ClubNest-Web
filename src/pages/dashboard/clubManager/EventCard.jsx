@@ -111,25 +111,15 @@ const EventCard = ({ event, registerId }) => {
   });
   console.log(registerId);
   const { mutate: cancelRegister } = useMutation({
-    mutationFn: async (status) => {
-      const res = await axiosSecure.patch(
-        `/cancelRegister/${registerId}`,
-        status
-      );
+    mutationFn: async () => {
+      const res = await axiosSecure.delete(`/cancelRegister/${registerId}`);
       return res.data;
     },
     onSuccess: () => {
       alert("Registration cancelled successfully");
-      queryClient.invalidateQueries(['events'])
+      queryClient.invalidateQueries(["events"]);
     },
   });
-
-  const handleCancelRegister = () => {
-    const status = {
-      status: "cancelled",
-    };
-    cancelRegister(status);
-  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -201,7 +191,7 @@ const EventCard = ({ event, registerId }) => {
                 {role === "member" && Location.pathname !== "/events" && (
                   <>
                     <button
-                      onClick={handleCancelRegister}
+                      onClick={cancelRegister}
                       className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
                     >
                       <X /> Cancel Register

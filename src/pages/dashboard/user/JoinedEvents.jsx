@@ -43,13 +43,6 @@ const JoinedEvents = () => {
     joinedEventIds?.includes(event._id)
   );
 
-  const registered = joinedEvents?.filter(
-    (data) => data.status === "registered"
-  );
-  console.log(joinedEvents);
-
-  const cancelled = joinedEvents?.filter((data) => data.status === "cancelled");
-
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -73,25 +66,12 @@ const JoinedEvents = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+        <div className="mb-10">
           <div className="bg-white p-6 rounded-2xl shadow text-center">
             <div className="text-3xl font-bold text-main">
               {joinedEvents?.length}
             </div>
-            <p className="text-gray-600">Total Events</p>
-          </div>
-          <div className="bg-white p-6 rounded-2xl shadow text-center">
-            <div className="text-3xl font-bold text-green-600">
-              {registered?.length}
-            </div>
-            <p className="text-gray-600">Registered</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow text-center">
-            <div className="text-3xl font-bold text-red-600">
-              {cancelled?.length}
-            </div>
-            <p className="text-gray-600">Cancelled</p>
+            <p className="text-gray-600">Total Joined Events</p>
           </div>
         </div>
 
