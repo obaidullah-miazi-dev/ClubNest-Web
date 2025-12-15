@@ -10,6 +10,7 @@ import {
   Upload,
   Mail,
   Tag,
+  X,
 } from "lucide-react";
 import useRole from "../../../hooks/useRole";
 import { NavLink, useLocation } from "react-router";
@@ -98,16 +99,16 @@ const EventCard = ({ event }) => {
     editEvent({ id: _id, eventData });
   };
 
-  const {mutate:handleDelete}= useMutation({
-    mutationFn: async ()=>{
-      const res = await axiosSecure.delete(`/deleteEvent/${_id}`)
-      return res.data 
+  const { mutate: handleDelete } = useMutation({
+    mutationFn: async () => {
+      const res = await axiosSecure.delete(`/deleteEvent/${_id}`);
+      return res.data;
     },
-    onSuccess: ()=>{
-      alert('deleted successfully')
-      queryClient.invalidateQueries(['events'])
-    }
-  })
+    onSuccess: () => {
+      alert("deleted successfully");
+      queryClient.invalidateQueries(["events"]);
+    },
+  });
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -175,7 +176,15 @@ const EventCard = ({ event }) => {
           {/* Action Buttons */}
           {role !== "Club-Manager" ? (
             <>
-              <div className="mt-5 pt-5 flex-1">
+              <div className="mt-5 pt-5 flex flex-col xl:flex-row gap-3">
+                {role === "member" && Location.pathname !== '/events' && (
+                  <>
+                    <button className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
+                     <X /> Cancel Register
+                    </button>
+                  </>
+                )}
+
                 <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                   <button className="bg-green-500 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                     {" "}
@@ -207,7 +216,10 @@ const EventCard = ({ event }) => {
                           {" "}
                           <Pencil size={18} /> Edit
                         </button>
-                        <button onClick={handleDelete} className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
+                        <button
+                          onClick={handleDelete}
+                          className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
+                        >
                           {" "}
                           <Trash size={18} /> Delete
                         </button>
