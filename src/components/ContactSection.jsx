@@ -39,13 +39,13 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-linear-to-b from-white to-purple-50">
+    <section className="py-20 px-4 bg-linear-to-b from-white via-purple-50 to-white">
       <div className="max-w-6xl mx-auto">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           className="bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2"
         >
           {/* Left: Contact Info */}
