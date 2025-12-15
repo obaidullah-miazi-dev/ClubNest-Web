@@ -32,6 +32,11 @@ const JoinedEvents = () => {
     (event) => event.status === "registered"
   );
 
+  const joinedEventMap = registeredEvents?.map((reg) => ({
+    eventId: reg.eventId,
+    registerId: reg._id,
+  }));
+
   const joinedEventIds = registeredEvents?.map((e) => e.eventId);
 
   const joinedEvent = allEvents?.filter((event) =>
@@ -41,6 +46,7 @@ const JoinedEvents = () => {
   const registered = joinedEvents?.filter(
     (data) => data.status === "registered"
   );
+  console.log(joinedEvents);
 
   const cancelled = joinedEvents?.filter((data) => data.status === "cancelled");
 
@@ -72,7 +78,7 @@ const JoinedEvents = () => {
             <div className="text-3xl font-bold text-main">
               {joinedEvents?.length}
             </div>
-            <p className="text-gray-600">Total Joined Events</p>
+            <p className="text-gray-600">Total Events</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
             <div className="text-3xl font-bold text-green-600">
@@ -105,9 +111,19 @@ const JoinedEvents = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {joinedEvent?.map((event) => (
-              <EventCard key={event._id} event={event} />
-            ))}
+            {joinedEvent?.map((event) => {
+              const regInfo = joinedEventMap.find(
+                (r) => r.eventId === event._id
+              );
+
+              return (
+                <EventCard
+                  key={event._id}
+                  event={event}
+                  registerId={regInfo?.registerId}
+                />
+              );
+            })}
           </div>
         )}
       </div>

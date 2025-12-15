@@ -24,7 +24,7 @@ import { imageUpload } from "../../../utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, registerId }) => {
   const { user } = useContext(AuthContext);
   const modalRef = useRef();
   const { role } = useRole();
@@ -109,6 +109,27 @@ const EventCard = ({ event }) => {
       queryClient.invalidateQueries(["events"]);
     },
   });
+  console.log(registerId);
+  const { mutate: cancelRegister } = useMutation({
+    mutationFn: async (status) => {
+      const res = await axiosSecure.patch(
+        `/cancelRegister/${registerId}`,
+        status
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      alert("Registration cancelled successfully");
+      queryClient.invalidateQueries(['events'])
+    },
+  });
+
+  const handleCancelRegister = () => {
+    const status = {
+      status: "cancelled",
+    };
+    cancelRegister(status);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -177,10 +198,13 @@ const EventCard = ({ event }) => {
           {role !== "Club-Manager" ? (
             <>
               <div className="mt-5 pt-5 flex flex-col xl:flex-row gap-3">
-                {role === "member" && Location.pathname !== '/events' && (
+                {role === "member" && Location.pathname !== "/events" && (
                   <>
-                    <button className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
-                     <X /> Cancel Register
+                    <button
+                      onClick={handleCancelRegister}
+                      className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      <X /> Cancel Register
                     </button>
                   </>
                 )}
@@ -199,7 +223,7 @@ const EventCard = ({ event }) => {
                 {/* edit delete button display only for club manager */}
                 {Location.pathname === "/" ||
                 (Location.pathname === "/events" && role === "Club-Manager") ? (
-                  <NavLink className={`w-full`}>
+                  <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                     <button className="bg-green-500 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                       {" "}
                       <Info size={18} /> Details
