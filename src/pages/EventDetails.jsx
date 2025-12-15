@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   MapPin,
   Calendar,
@@ -21,6 +21,7 @@ const EventDetails = () => {
   const { id } = useParams();
   const { role } = useRole();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const {
     data: eventData,
@@ -34,21 +35,32 @@ const EventDetails = () => {
     },
   });
 
-  const {data:RegisteredEvent}= useQuery({
-    queryKey:['registeredEvents',user.email],
-    queryFn: async()=>{
-      const res = await axiosSecure.get(`/getRegisteredEvents?email=${user.email}`)
-      return res.data 
-    }
-  })
+  const { data: membershipData } = useQuery({
+    queryKey: ["membershipData", user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/membershipGet?email=${user.email}`);
+      return res.data;
+    },
+  });
 
-  const existEventRegistration = RegisteredEvent?.find(e=> e.eventId === id)
-  console.log(existEventRegistration?.status)
+  const { data: RegisteredEvent } = useQuery({
+    queryKey: ["registeredEvents", user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/getRegisteredEvents?email=${user.email}`
+      );
+      return res.data;
+    },
+  });
 
-  console.log(RegisteredEvent)
+  const existEventRegistration = RegisteredEvent?.find((e) => e.eventId === id);
 
   const event = eventData?.[0];
-  // console.log(event);
+
+  const membershipDataClubIds = membershipData?.map((data) => data.clubId);
+  console.log(membershipDataClubIds);
+
+  const isJoinedClub = membershipDataClubIds?.includes(event?.clubId);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -78,13 +90,18 @@ const EventDetails = () => {
   });
 
   const handleRegister = () => {
-    const eventData = {
-      eventId: id,
-      status: "registered",
-      userEmail: user.email,
-      clubId: event.clubId,
-    };
-    registerEvent(eventData);
+    if (!isJoinedClub) {
+      alert("please join first on this events club");
+      navigate(`/clubs/${event.clubId}`);
+    } else {
+      const eventData = {
+        eventId: id,
+        status: "registered",
+        userEmail: user.email,
+        clubId: event.clubId,
+      };
+      registerEvent(eventData);
+    }
   };
 
   if (isLoading) {
@@ -205,7 +222,8 @@ const EventDetails = () => {
                   </p>
                 </div>
 
-                {role === "member" && existEventRegistration?.status !== 'registered' ? (
+                {role === "member" &&
+                existEventRegistration?.status !== "registered" ? (
                   <>
                     <button
                       onClick={handleRegister}
@@ -215,7 +233,13 @@ const EventDetails = () => {
                       Register Now
                     </button>
                   </>
-                ):existEventRegistration?.status === 'registered'?<p className="w-full py-4 md:text-xl font-bold rounded-2xl bg-main hover:cursor-not-allowed text-white shadow-xl flex items-center justify-center gap-3"> <Check />Already Registered</p> : (
+                ) : existEventRegistration?.status === "registered" ? (
+                  <p className="w-full py-4 md:text-xl font-bold rounded-2xl bg-main hover:cursor-not-allowed text-white shadow-xl flex items-center justify-center gap-3">
+                    {" "}
+                    <Check />
+                    Already Registered
+                  </p>
+                ) : (
                   <>
                     <p className="font-bold text-xl text-center text-main">
                       Only Club Members Can Register
