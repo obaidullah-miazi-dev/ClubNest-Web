@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from './authProvider';
 import useRole from '../hooks/useRole';
 import Forbidden from '../components/Forbidden';
+import Loading from '../components/animation/Loading';
 
 
 const ClubManagerOnlyRoute = ({children}) => {
@@ -10,10 +11,10 @@ const ClubManagerOnlyRoute = ({children}) => {
     const {role,isLoading} = useRole()
 
     if(loading || isLoading){
-        return <p>loading...</p>
+        return <Loading />
     }
 
-    if(role !== 'rider'){
+    if(role !== 'Club-Manager'){
         return <Forbidden /> 
     }
 

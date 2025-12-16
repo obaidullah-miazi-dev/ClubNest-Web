@@ -25,6 +25,9 @@ import JoinedEvents from "../pages/dashboard/user/JoinedEvents";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Membership from "../pages/dashboard/clubManager/Membership";
+import PrivateRoute from "../provider/PrivateRoute";
+import AdminOnlyRoute from "../provider/AdminOnlyRoute";
+import ClubManagerOnlyRoute from "../provider/ClubManagerOnlyRoute";
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +48,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/myProfile",
-        Component: MyProfile,
+        element: (
+          <PrivateRoute>
+            <MyProfile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/becomeClubManager",
@@ -60,79 +67,135 @@ export const router = createBrowserRouter([
         Component: Clubs,
       },
       {
-        path: '/events',
-        Component: Events
+        path: "/events",
+        Component: Events,
       },
       {
-        path: '/eventDetails/:id',
-        Component: EventDetails
+        path: "/eventDetails/:id",
+        Component: EventDetails,
       },
       {
-        path: '/aboutUs',
-        Component: About
+        path: "/aboutUs",
+        Component: About,
       },
       {
-        path: '/contactUs',
-        Component: Contact
-      }
+        path: "/contactUs",
+        Component: Contact,
+      },
     ],
   },
   {
     path: "/dashboard",
-    Component: DashboardLayout,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
-        Component: DashboardHome,
+        element: (
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        ),
       },
       {
         path: "approve-club-manager",
-        Component: ClubManagerApproval,
+        element: (
+          <AdminOnlyRoute>
+            <ClubManagerApproval />
+          </AdminOnlyRoute>
+        ),
       },
       {
         path: "create-club",
-        Component: CreateClub,
+        element: (
+          <ClubManagerOnlyRoute>
+            <CreateClub />
+          </ClubManagerOnlyRoute>
+        ),
       },
       {
         path: "my-clubs",
-        Component: MyClub,
+        element: (
+          <ClubManagerOnlyRoute>
+            <MyClub />
+          </ClubManagerOnlyRoute>
+        ),
       },
       {
         path: "approve-clubs",
-        Component: ClubApprovalList,
+        element: (
+          <AdminOnlyRoute>
+            <ClubApprovalList />
+          </AdminOnlyRoute>
+        ),
       },
       {
         path: "manage-users",
-        Component: ManageUsers,
+        element: (
+          <AdminOnlyRoute>
+            <ManageUsers />
+          </AdminOnlyRoute>
+        ),
       },
       {
         path: "my-join-requests",
-        Component: MyJoinRequests,
+        element: (
+          <PrivateRoute>
+            <MyJoinRequests />
+          </PrivateRoute>
+        ),
       },
       {
         path: "payment-success",
-        Component: PaymentSuccess,
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
       },
       {
         path: "payment-history",
-        Component: PaymentHistory,
+        element: (
+          <PrivateRoute>
+            <PaymentHistory />
+          </PrivateRoute>
+        ),
       },
       {
         path: "joined-clubs",
-        Component: JoinedClubs,
+        element: (
+          <PrivateRoute>
+            <JoinedClubs />
+          </PrivateRoute>
+        ),
       },
       {
         path: "my-events",
-        Component: MyEvents
+        element: (
+          <ClubManagerOnlyRoute>
+            <MyEvents />
+          </ClubManagerOnlyRoute>
+        ),
       },
       {
-        path: 'joined-events',
-        Component: JoinedEvents
+        path: "joined-events",
+        element: (
+          <PrivateRoute>
+            <JoinedEvents />
+          </PrivateRoute>
+        ),
       },
       {
-        path: 'membership',
-        Component: Membership
-      }
+        path: "membership",
+        element: (
+          <ClubManagerOnlyRoute>
+            <Membership />
+          </ClubManagerOnlyRoute>
+        ),
+      },
     ],
   },
 ]);
