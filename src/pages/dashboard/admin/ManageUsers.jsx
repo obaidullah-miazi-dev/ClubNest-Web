@@ -42,10 +42,13 @@ const ManageUsers = () => {
     updateUserRole(user,'member')
   }
 
+  const makeClubManager = (user)=>{
+    updateUserRole(user,'Club-Manager')
+  }
+
   if (isPending) return <Loading />;
 
-  // filtered just admin and member only
-  const users = allUsers?.filter((user) => user.role !== "Club-Manager");
+  
 
 
   const allAdmin = allUsers?.filter(user=> user.role === 'admin')
@@ -103,9 +106,6 @@ const ManageUsers = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                     User
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                    Contact
-                  </th>
 
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                     Created
@@ -119,7 +119,7 @@ const ManageUsers = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {users?.map((user) => (
+                {allUsers?.map((user) => (
                   <tr key={user._id} className="hover:bg-gray-50 transition">
                     {/* User Info */}
                     <td className="px-6 py-5">
@@ -133,19 +133,16 @@ const ManageUsers = () => {
                           <p className="font-semibold text-gray-900">
                             {user.displayName}
                           </p>
+
+                          <div className="flex items-center gap-2 text-gray-700">
+                          <Mail className="w-4 h-4" />
+                          <span className="text-sm">{user.email}</span>
+                        </div>
                         </div>
                       </div>
                     </td>
 
-                    {/* Contact */}
-                    <td className="px-6 py-5">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <Mail className="w-4 h-4" />
-                          <span className="text-sm">{user.email}</span>
-                        </div>
-                      </div>
-                    </td>
+                    
 
                     {/* created Date */}
                     <td className="px-6 py-5 text-center">
@@ -170,13 +167,20 @@ const ManageUsers = () => {
                             onClick={() => makeAdmin(user)}
                           className="p-3 bg-green-100 text-green-700 rounded-xl hover:bg-green-200 transition group"
                         >
-                          <Check className="w-5 h-5 group-hover:scale-110 transition" />
+                          Make Admin
                         </button>
                         <button
                             onClick={() => removeAdmin(user)}
-                          className="p-3 bg-red-100 text-red-700 rounded-xl hover:bg-red-200 transition group"
+                          className="p-3 bg-orange-100 text-orange-600 rounded-xl hover:bg-red-200 transition group"
                         >
-                          <X className="w-5 h-5 group-hover:scale-110 transition" />
+                          Make Member
+                        </button>
+
+                        <button
+                            onClick={() => makeClubManager(user)}
+                          className="p-3 bg-blue-100 text-blue-700 rounded-xl hover:bg-red-200 transition group"
+                        >
+                          Make Club Manager
                         </button>
                       </div>
                     </td>
@@ -187,7 +191,7 @@ const ManageUsers = () => {
           </div>
 
           {/* Empty State (if no applications) */}
-          {users?.length === 0 && (
+          {allUsers?.length === 0 && (
             <div className="text-center py-16">
               <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500 text-lg">No users at the moment.</p>
