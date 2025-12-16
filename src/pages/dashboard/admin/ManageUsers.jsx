@@ -8,7 +8,11 @@ import Swal from "sweetalert2";
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const { data: allUsers } = useQuery({
+  const {
+    data: allUsers,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
@@ -59,7 +63,13 @@ const ManageUsers = () => {
     updateUserRole(user, "Club-Manager");
   };
 
-  if (isPending) return <Loading />;
+  if (isLoading || isFetching || isPending) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   const allAdmin = allUsers?.filter((user) => user.role === "admin");
   const allClubManager = allUsers?.filter(

@@ -16,7 +16,11 @@ import Swal from "sweetalert2";
 
 const ClubManagerApproval = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: clubManager } = useQuery({
+  const {
+    data: clubManager,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["getClubManager"],
     queryFn: async () => {
       const res = await axiosSecure.get("/getClubManager");
@@ -53,7 +57,13 @@ const ClubManagerApproval = () => {
     },
   });
 
-  if (isPending) return <Loading />;
+  if (isLoading || isFetching || isPending) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   const updateClubManagerStatus = (manager, status) => {
     const updateInfo = { email: manager?.email, status: status };

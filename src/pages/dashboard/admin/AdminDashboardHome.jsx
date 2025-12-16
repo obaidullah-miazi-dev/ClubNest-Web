@@ -17,11 +17,16 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/animation/Loading";
 
 const AdminDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: statsData } = useQuery({
+  const {
+    data: statsData,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["stats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/admin-stats");
@@ -47,6 +52,14 @@ const AdminDashboardHome = () => {
 
   // Colors for charts
   const COLORS = ["#6D28D9", "#10B981", "#3B82F6", "#F59E0B"];
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
