@@ -13,11 +13,16 @@ import {
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import Loading from "../../../components/animation/Loading";
 
 const Membership = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: memberships } = useQuery({
+  const {
+    data: memberships,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["membership"],
     queryFn: async () => {
       const res = await axiosSecure.get("/membershipGet");
@@ -86,6 +91,14 @@ const Membership = () => {
       transition: { staggerChildren: 0.1, delayChildren: 0.2 },
     },
   };
+
+  if (isLoading || isFetching || isPending) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">

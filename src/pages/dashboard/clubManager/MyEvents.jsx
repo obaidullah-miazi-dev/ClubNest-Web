@@ -1,22 +1,31 @@
-import { Plus, Calendar, MapPin, Users, Ticket } from 'lucide-react';
-import EventCard from './EventCard';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import Loading from '../../../components/animation/Loading';
-
+import { Plus, Calendar, MapPin, Users, Ticket } from "lucide-react";
+import EventCard from "./EventCard";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/animation/Loading";
 
 const MyEvents = () => {
-    const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
-  const {data:events,isLoading}=useQuery({
-    queryKey:['events'],
-    queryFn: async()=>{
-        const res = await axiosSecure.get('/getEvents')
-        return res.data 
-    }
-  })
+  const {
+    data: events,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/getEvents");
+      return res.data;
+    },
+  });
 
-  if(isLoading) return <Loading />
+  if (isLoading || isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -34,22 +43,18 @@ const MyEvents = () => {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           <div className="bg-white p-6 rounded-2xl shadow text-center">
-        
             <div className="text-3xl font-bold text-main">{events?.length}</div>
             <p className="text-gray-600">Upcoming Events</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
-         
             <div className="text-3xl font-bold text-green-600">5</div>
             <p className="text-gray-600">Cities</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
-         
             <div className="text-3xl font-bold text-blue-600">1.2K+</div>
             <p className="text-gray-600">Attendees</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
-           
             <div className="text-3xl font-bold text-purple-600">8</div>
             <p className="text-gray-600">Booked Tickets</p>
           </div>
@@ -60,7 +65,9 @@ const MyEvents = () => {
           <div className="text-center py-20">
             <Calendar className="w-20 h-20 text-gray-400 mx-auto mb-6" />
             <h3 className="text-2xl font-bold text-gray-700">No events yet</h3>
-            <p className="text-gray-500 mt-3">Check back later for exciting upcoming events!</p>
+            <p className="text-gray-500 mt-3">
+              Check back later for exciting upcoming events!
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -1,25 +1,37 @@
 // pages/MyClubs.jsx
-import React, { useContext } from 'react';
-import { Plus, Package } from 'lucide-react';
-import { Link } from 'react-router';
-import { AuthContext } from '../../../provider/authProvider';
-import ClubCard from './ClubCard';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import React, { useContext } from "react";
+import { Plus, Package } from "lucide-react";
+import { Link } from "react-router";
+import { AuthContext } from "../../../provider/authProvider";
+import ClubCard from "./ClubCard";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/animation/Loading";
 
 const MyClub = () => {
   const { user } = useContext(AuthContext);
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
-  
-  const {data:myClubs,refetch} = useQuery({
-    queryKey:['myClubs',user?.email],
-    queryFn:async()=>{
-        const res = await axiosSecure.get(`/clubs?email=${user.email}`)
-        return res.data 
-    }
-  })
- 
+  const {
+    data: myClubs,
+    refetch,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["myClubs", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/clubs?email=${user.email}`);
+      return res.data;
+    },
+  });
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -44,24 +56,26 @@ const MyClub = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
           <div className="bg-white p-6 rounded-2xl shadow text-center">
-            <div className="text-3xl font-bold text-main">{myClubs?.length}</div>
+            <div className="text-3xl font-bold text-main">
+              {myClubs?.length}
+            </div>
             <p className="text-gray-600">Total Clubs</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
             <div className="text-3xl font-bold text-green-600">
-              {myClubs?.filter(c => c.status === 'approved')?.length}
+              {myClubs?.filter((c) => c.status === "approved")?.length}
             </div>
             <p className="text-gray-600">Approved</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
             <div className="text-3xl font-bold text-amber-600">
-              {myClubs?.filter(c => c.status === 'pending')?.length}
+              {myClubs?.filter((c) => c.status === "pending")?.length}
             </div>
             <p className="text-gray-600">Pending</p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow text-center">
             <div className="text-3xl font-bold text-red-600">
-              {myClubs?.filter(c => c.status === 'rejected')?.length}
+              {myClubs?.filter((c) => c.status === "rejected")?.length}
             </div>
             <p className="text-gray-600">Rejected</p>
           </div>
@@ -76,7 +90,9 @@ const MyClub = () => {
           <div className="text-center py-20">
             <Package className="w-20 h-20 text-gray-400 mx-auto mb-6" />
             <h3 className="text-2xl font-bold text-gray-700">No clubs yet</h3>
-            <p className="text-gray-500 mt-3">Start by creating your first club!</p>
+            <p className="text-gray-500 mt-3">
+              Start by creating your first club!
+            </p>
             <Link to="/dashboard/create-club">
               <button className="mt-6 bg-main text-white px-10 py-4 rounded-2xl font-bold hover:bg-main/90 transition">
                 + Create Club
@@ -86,7 +102,7 @@ const MyClub = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {myClubs?.map((club) => (
-              <ClubCard key={club._id} club={club} refetch={refetch}/>
+              <ClubCard key={club._id} club={club} refetch={refetch} />
             ))}
           </div>
         )}

@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { imageUpload } from "../../../utils";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/animation/Loading";
 
 const CreateClub = () => {
   const { user } = useContext(AuthContext);
@@ -26,7 +27,7 @@ const CreateClub = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
     reset,
   } = useForm();
 
@@ -65,6 +66,14 @@ const CreateClub = () => {
         });
       });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   const categories = [
     "Photography",

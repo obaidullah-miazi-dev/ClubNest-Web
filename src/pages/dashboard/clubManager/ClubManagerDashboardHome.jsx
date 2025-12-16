@@ -21,7 +21,11 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const ClubManagerDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: managerStats } = useQuery({
+  const {
+    data: managerStats,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["manager-stats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/manager-stats");
@@ -30,18 +34,26 @@ const ClubManagerDashboardHome = () => {
   });
 
   const statsData = [
-      { status: "Total Members", count: managerStats?.totalMembers },
-      { status: "Total Clubs", count: managerStats?.totalClubs },
-      { status: "Total Events", count: managerStats?.totalEvents },
-      { status: "Total Earnings", count: managerStats?.totalEarnings },
+    { status: "Total Members", count: managerStats?.totalMembers },
+    { status: "Total Clubs", count: managerStats?.totalClubs },
+    { status: "Total Events", count: managerStats?.totalEvents },
+    { status: "Total Earnings", count: managerStats?.totalEarnings },
   ];
 
   const chartDataWithoutEarnings = statsData
-  .filter(item => item.status !== "Total Earnings")
-  .map(item => ({
-    name: item.status.replace("Total ", ""),
-    value: item.count,
-  }));
+    .filter((item) => item.status !== "Total Earnings")
+    .map((item) => ({
+      name: item.status.replace("Total ", ""),
+      value: item.count,
+    }));
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
