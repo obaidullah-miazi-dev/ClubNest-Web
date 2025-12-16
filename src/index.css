@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@theme{
+html,
+body {
+  scroll-behavior: auto;
+}
+
+@theme {
   --color-main: #3713ec;
 }
