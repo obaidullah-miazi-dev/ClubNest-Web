@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AlertCircle, Calendar, Check, Mail, X } from "lucide-react";
 import Loading from "../../../components/animation/Loading";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -21,39 +22,50 @@ const ManageUsers = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("status updated successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Status updated successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["users"]);
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: (err) => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: err.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
   });
 
-  const updateUserRole = (user,status)=>{
+  const updateUserRole = (user, status) => {
     const updateInfo = { email: user?.email, status: status };
-    updateStatus({id:user._id,updateInfo})
-  }
+    updateStatus({ id: user._id, updateInfo });
+  };
 
-  const makeAdmin = (user)=>{
-    updateUserRole(user,'admin')
-  }
+  const makeAdmin = (user) => {
+    updateUserRole(user, "admin");
+  };
 
-  const removeAdmin = (user)=>{
-    updateUserRole(user,'member')
-  }
+  const removeAdmin = (user) => {
+    updateUserRole(user, "member");
+  };
 
-  const makeClubManager = (user)=>{
-    updateUserRole(user,'Club-Manager')
-  }
+  const makeClubManager = (user) => {
+    updateUserRole(user, "Club-Manager");
+  };
 
   if (isPending) return <Loading />;
 
-  
-
-
-  const allAdmin = allUsers?.filter(user=> user.role === 'admin')
-  const allClubManager = allUsers?.filter(user=> user.role === 'Club-Manager')
-  const allMember = allUsers?.filter(user=> user.role === 'member')
+  const allAdmin = allUsers?.filter((user) => user.role === "admin");
+  const allClubManager = allUsers?.filter(
+    (user) => user.role === "Club-Manager"
+  );
+  const allMember = allUsers?.filter((user) => user.role === "member");
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -80,15 +92,21 @@ const ManageUsers = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-main">{allAdmin?.length}</div>
+            <div className="text-3xl font-bold text-main">
+              {allAdmin?.length}
+            </div>
             <p className="text-gray-600 mt-1">Admin</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-green-600">{allClubManager?.length}</div>
+            <div className="text-3xl font-bold text-green-600">
+              {allClubManager?.length}
+            </div>
             <p className="text-gray-600 mt-1">Club Managers</p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-orange-600">{allMember?.length}</div>
+            <div className="text-3xl font-bold text-orange-600">
+              {allMember?.length}
+            </div>
             <p className="text-gray-600 mt-1">Members</p>
           </div>
         </div>
@@ -135,14 +153,12 @@ const ManageUsers = () => {
                           </p>
 
                           <div className="flex items-center gap-2 text-gray-700">
-                          <Mail className="w-4 h-4" />
-                          <span className="text-sm">{user.email}</span>
-                        </div>
+                            <Mail className="w-4 h-4" />
+                            <span className="text-sm">{user.email}</span>
+                          </div>
                         </div>
                       </div>
                     </td>
-
-                    
 
                     {/* created Date */}
                     <td className="px-6 py-5 text-center">
@@ -164,20 +180,20 @@ const ManageUsers = () => {
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-center gap-3">
                         <button
-                            onClick={() => makeAdmin(user)}
+                          onClick={() => makeAdmin(user)}
                           className="p-3 bg-green-100 text-green-700 rounded-xl hover:bg-green-200 transition group font-semibold cursor-pointer"
                         >
                           Make Admin
                         </button>
                         <button
-                            onClick={() => removeAdmin(user)}
+                          onClick={() => removeAdmin(user)}
                           className="p-3 bg-orange-100 text-orange-600 rounded-xl hover:bg-orange-200 transition group font-semibold cursor-pointer"
                         >
                           Make Member
                         </button>
 
                         <button
-                            onClick={() => makeClubManager(user)}
+                          onClick={() => makeClubManager(user)}
                           className="p-3 bg-blue-100 text-main rounded-xl hover:bg-main/10 transition group font-semibold cursor-pointer"
                         >
                           Make Club Manager

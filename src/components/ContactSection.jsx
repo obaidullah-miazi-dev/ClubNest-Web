@@ -1,8 +1,19 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, CheckCircle2, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+} from "lucide-react";
 import Button from "./Button";
+import Swal from "sweetalert2";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +29,13 @@ const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Thanks for Messaging Us");
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Thanks for Messaging Us",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   };
 
   const containerVariants = {

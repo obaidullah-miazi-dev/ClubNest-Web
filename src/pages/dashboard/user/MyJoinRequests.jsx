@@ -10,6 +10,7 @@ import {
   PlusCircle,
   X,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 const MyJoinRequests = () => {
   const axiosSecure = useAxiosSecure();
@@ -52,19 +53,24 @@ const MyJoinRequests = () => {
     payClubFee(paymentInfo);
   };
 
-
-  const {mutate:freeJoin} = useMutation({
-    mutationFn:async(clubInfo)=>{
-      const res = await axiosSecure.patch('/freeJoin',clubInfo)
-      return res.data
+  const { mutate: freeJoin } = useMutation({
+    mutationFn: async (clubInfo) => {
+      const res = await axiosSecure.patch("/freeJoin", clubInfo);
+      return res.data;
     },
-    onSuccess:()=>{
-      alert('joined successfully')
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Joined successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["joinReqData"]);
-    }
-  })
+    },
+  });
 
-  const handleFreeJoin = (data) =>{
+  const handleFreeJoin = (data) => {
     const clubInfo = {
       clubFee: data.clubFee,
       clubName: data.clubName,
@@ -74,8 +80,8 @@ const MyJoinRequests = () => {
       memberId: data._id,
       status: data.status,
     };
-    freeJoin(clubInfo)
-  }
+    freeJoin(clubInfo);
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -203,7 +209,14 @@ const MyJoinRequests = () => {
                             {reqData.status.split("g").join("g ")}
                           </p>
                         ) : (
-                          <p className={` font-semibold  py-1 px-2.5 rounded-full ${reqData.status === 'pending join' || reqData.status === 'expired' ? 'text-orange-500 bg-amber-100':'bg-green-100 text-green-800'}`}>
+                          <p
+                            className={` font-semibold  py-1 px-2.5 rounded-full ${
+                              reqData.status === "pending join" ||
+                              reqData.status === "expired"
+                                ? "text-orange-500 bg-amber-100"
+                                : "bg-green-100 text-green-800"
+                            }`}
+                          >
                             {reqData.status}
                           </p>
                         )}
@@ -225,11 +238,15 @@ const MyJoinRequests = () => {
                     {/* Actions */}
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-center gap-3">
-                        {reqData.clubFee === 0? (
-                          <button 
-                          disabled={reqData?.status === "active"}
-                          onClick={()=> handleFreeJoin(reqData)}
-                          className={`p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2 ${reqData.status === 'active' && 'opacity-60 cursor-not-allowed! hover:bg-green-600 hover:text-white'}`}>
+                        {reqData.clubFee === 0 ? (
+                          <button
+                            disabled={reqData?.status === "active"}
+                            onClick={() => handleFreeJoin(reqData)}
+                            className={`p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-400 hover:text-black cursor-pointer transition group flex justify-center items-center gap-2 ${
+                              reqData.status === "active" &&
+                              "opacity-60 cursor-not-allowed! hover:bg-green-600 hover:text-white"
+                            }`}
+                          >
                             <PlusCircle /> Join Now
                           </button>
                         ) : reqData.status === "active" ? (

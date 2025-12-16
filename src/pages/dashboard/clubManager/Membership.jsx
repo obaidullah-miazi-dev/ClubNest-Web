@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const Membership = () => {
   const axiosSecure = useAxiosSecure();
@@ -24,30 +25,44 @@ const Membership = () => {
     },
   });
 
-
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { mutate: updateStatus, isPending } = useMutation({
     mutationFn: async ({ id, updateInfo }) => {
-      const res = await axiosSecure.patch(`/updateMembershipStatus/${id}`, updateInfo);
+      const res = await axiosSecure.patch(
+        `/updateMembershipStatus/${id}`,
+        updateInfo
+      );
       return res.data;
     },
     onSuccess: () => {
-      alert("status updated successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Status updated successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["membership"]);
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: (err) => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: err.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
   });
 
   const activeMember = (id) => {
-    const updateInfo = { status: 'active' };
-    updateStatus({id,updateInfo})
+    const updateInfo = { status: "active" };
+    updateStatus({ id, updateInfo });
   };
 
   const expireMember = (id) => {
-    const updateInfo = { status: 'expired' };
-    updateStatus({id,updateInfo})
+    const updateInfo = { status: "expired" };
+    updateStatus({ id, updateInfo });
   };
 
   const formatDate = (dateString) => {
@@ -89,7 +104,8 @@ const Membership = () => {
             My Clubs Memberships
           </h1>
           <p className="mt-4 text-xl text-gray-600">
-            View all clubs memberships you're created and manage your members status
+            View all clubs memberships you're created and manage your members
+            status
           </p>
         </motion.div>
 

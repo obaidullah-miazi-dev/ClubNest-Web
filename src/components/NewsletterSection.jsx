@@ -1,17 +1,23 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Send, Sparkles, BellRing } from 'lucide-react';
-import Button from './Button';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Send, Sparkles, BellRing } from "lucide-react";
+import Button from "./Button";
+import Swal from "sweetalert2";
 
 const NewsletterSection = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Thanks for Subscribing')
-    e.target.value = ''
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Thanks for Subscribing",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   };
 
   const containerVariants = {
@@ -20,9 +26,9 @@ const NewsletterSection = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.3,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -30,8 +36,8 @@ const NewsletterSection = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 80 }
-    }
+      transition: { type: "spring", stiffness: 80 },
+    },
   };
 
   return (
@@ -56,7 +62,11 @@ const NewsletterSection = () => {
             >
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="inline-block mb-6"
               >
                 <div className="w-20 h-20 bg-main/10 rounded-full flex items-center justify-center mx-auto lg:mx-0">
@@ -68,7 +78,8 @@ const NewsletterSection = () => {
                 Stay in the Loop
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Get the latest updates on new clubs, exciting events, and exclusive community highlights delivered straight to your inbox.
+                Get the latest updates on new clubs, exciting events, and
+                exclusive community highlights delivered straight to your inbox.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">

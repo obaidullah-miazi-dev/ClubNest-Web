@@ -1,26 +1,27 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
-  Clock, 
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Clock,
   CheckCircle2,
   Facebook,
   Instagram,
   Twitter,
-  Linkedin
-} from 'lucide-react';
-import Button from '../components/Button';
+  Linkedin,
+} from "lucide-react";
+import Button from "../components/Button";
+import Swal from "sweetalert2";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -30,7 +31,13 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('thanks for messaging us')
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Thanks for messaging Us",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   };
 
   // Animation variants
@@ -38,17 +45,17 @@ const Contact = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
-    }
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 50, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      transition: { type: "spring", stiffness: 80, damping: 16 }
-    }
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 80, damping: 16 },
+    },
   };
 
   const floatVariants = {
@@ -57,9 +64,9 @@ const Contact = () => {
       transition: {
         duration: 6,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
@@ -86,7 +93,8 @@ const Contact = () => {
             Get in Touch
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-            We’d love to hear from you! Whether you have a question, feedback, or just want to say hello.
+            We’d love to hear from you! Whether you have a question, feedback,
+            or just want to say hello.
           </p>
         </motion.div>
 
@@ -101,18 +109,27 @@ const Contact = () => {
           <motion.div variants={itemVariants} className="space-y-12">
             {/* Contact Details */}
             <div className="bg-white rounded-3xl shadow-2xl p-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Contact Information</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                Contact Information
+              </h2>
               <div className="space-y-8">
                 <div className="flex items-start gap-6">
                   <div className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center shrink-0">
                     <Mail className="w-7 h-7 text-main" />
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-gray-900">Email Us</p>
-                    <a href="mailto:hello@clubnest.com" className="text-xl text-gray-600 hover:text-main transition">
+                    <p className="text-lg font-semibold text-gray-900">
+                      Email Us
+                    </p>
+                    <a
+                      href="mailto:hello@clubnest.com"
+                      className="text-xl text-gray-600 hover:text-main transition"
+                    >
                       hello@clubnest.com
                     </a>
-                    <p className="text-sm text-gray-500 mt-1">We reply within 24 hours</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      We reply within 24 hours
+                    </p>
                   </div>
                 </div>
 
@@ -121,9 +138,13 @@ const Contact = () => {
                     <Phone className="w-7 h-7 text-main" />
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-gray-900">Call Us</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      Call Us
+                    </p>
                     <p className="text-xl text-gray-600">+880 1234 567 890</p>
-                    <p className="text-sm text-gray-500 mt-1">Mon–Fri: 9AM–6PM</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Mon–Fri: 9AM–6PM
+                    </p>
                   </div>
                 </div>
 
@@ -132,9 +153,13 @@ const Contact = () => {
                     <MapPin className="w-7 h-7 text-main" />
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-gray-900">Visit Us</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      Visit Us
+                    </p>
                     <p className="text-xl text-gray-600">Dhaka, Bangladesh</p>
-                    <p className="text-sm text-gray-500 mt-1">House 12, Road 5, Banani</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      House 12, Road 5, Banani
+                    </p>
                   </div>
                 </div>
 
@@ -143,9 +168,13 @@ const Contact = () => {
                     <Clock className="w-7 h-7 text-main" />
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-gray-900">Working Hours</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      Working Hours
+                    </p>
                     <p className="text-xl text-gray-600">Monday – Friday</p>
-                    <p className="text-sm text-gray-500 mt-1">9:00 AM – 6:00 PM (GMT+6)</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      9:00 AM – 6:00 PM (GMT+6)
+                    </p>
                   </div>
                 </div>
               </div>
@@ -153,18 +182,32 @@ const Contact = () => {
 
             {/* Social Media */}
             <div className="bg-white rounded-3xl shadow-2xl p-10">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Follow Us</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Follow Us
+              </h3>
               <div className="flex gap-6">
-                <a href="#" className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group">
+                <a
+                  href="#"
+                  className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group"
+                >
                   <Facebook className="w-7 h-7 text-main group-hover:text-white" />
                 </a>
-                <a href="#" className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group">
+                <a
+                  href="#"
+                  className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group"
+                >
                   <Instagram className="w-7 h-7 text-main group-hover:text-white" />
                 </a>
-                <a href="#" className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group">
+                <a
+                  href="#"
+                  className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group"
+                >
                   <Twitter className="w-7 h-7 text-main group-hover:text-white" />
                 </a>
-                <a href="#" className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group">
+                <a
+                  href="#"
+                  className="w-14 h-14 bg-main/10 rounded-2xl flex items-center justify-center hover:bg-main hover:text-white transition group"
+                >
                   <Linkedin className="w-7 h-7 text-main group-hover:text-white" />
                 </a>
               </div>
@@ -186,7 +229,8 @@ const Contact = () => {
                     Thank You!
                   </h3>
                   <p className="text-xl text-gray-600">
-                    Your message has been sent successfully. We’ll get back to you soon!
+                    Your message has been sent successfully. We’ll get back to
+                    you soon!
                   </p>
                 </motion.div>
               ) : (

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import { AuthContext } from "../provider/authProvider";
 import {
   Calendars,
@@ -20,23 +20,42 @@ import {
 } from "lucide-react";
 import logo from "../assets/ClubNest-logo.png";
 import useRole from "../hooks/useRole";
+import Swal from "sweetalert2";
 
 const DashboardLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
-  const { role } = useRole();
-  // console.log(role);
 
-  const handleLogout = () => {
-    alert("are you sure");
-    logOut();
-    setIsDropdownOpen(false);
-    setIsMobileMenuOpen(false);
-  };
   const setMenuClose = () => {
     setIsMobileMenuOpen(false);
     setIsDropdownOpen(false);
+  };
+  const { role } = useRole();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure to Log out?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Log Out",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+        setIsDropdownOpen(false);
+        setIsMobileMenuOpen(false);
+        navigate("/");
+        Swal.fire({
+          title: "Log outed",
+          text: "Log out Successfully",
+          icon: "success",
+        });
+      }
+    });
   };
   return (
     <div className="drawer lg:drawer-open">
@@ -155,9 +174,7 @@ const DashboardLayout = () => {
                   data-tip="Home"
                 >
                   <Home size={18} />
-                  <span className="is-drawer-close:hidden">
-                    Home Page
-                  </span>
+                  <span className="is-drawer-close:hidden">Home Page</span>
                 </button>
               </li>
             </NavLink>

@@ -14,11 +14,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Link } from "react-router";
 import Loading from "../../../components/animation/Loading";
+import Swal from "sweetalert2";
 
 const ClubApprovalList = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: Clubs, isLoading } = useQuery({
+  const { data: Clubs, isLoading , isFetching } = useQuery({
     queryKey: ["allClubs"],
     queryFn: async () => {
       const res = await axiosSecure.get("/clubs");
@@ -33,7 +34,13 @@ const ClubApprovalList = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("status updated");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Status Updated Successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["allClubs"]);
     },
   });
@@ -61,7 +68,11 @@ const ClubApprovalList = () => {
     });
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isFetching) {
+   return <div className="min-h-screen flex justify-center items-center">
+      <Loading />
+    </div>;
+  }
   const pendingClubs = Clubs.filter((c) => c.status === "pending");
   const approvedClubs = Clubs.filter((c) => c.status === "approved");
   const rejectedClubs = Clubs.filter((c) => c.status === "rejected");

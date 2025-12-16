@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import Button from "../../../components/Button";
 import { imageUpload } from "../../../utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const ClubCard = ({ club }) => {
   const axiosSecure = useAxiosSecure();
@@ -88,7 +89,13 @@ const ClubCard = ({ club }) => {
       return res.data;
     },
     onSuccess: () => {
-      alert("edited successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Edited successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["myClubs"]);
       modalRef.current.close();
     },
@@ -112,11 +119,23 @@ const ClubCard = ({ club }) => {
       return res.data;
     },
     onSuccess: () => {
-      alert("deleted Club");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Club Deleted Successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["myClubs"]);
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: (err) => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: err.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
   });
   const handleDelete = (id) => {
@@ -225,7 +244,8 @@ const ClubCard = ({ club }) => {
             </div>
 
             {/* edit delete button display only for club manager */}
-            {(Location.pathname === "/" || Location.pathname === '/clubs') && role === "Club-Manager" ? (
+            {(Location.pathname === "/" || Location.pathname === "/clubs") &&
+            role === "Club-Manager" ? (
               <NavLink to={`/clubs/${_id}`} className={`w-full`}>
                 <button className="bg-green-500 text-white font-semibold py-2 mt-5 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                   {" "}

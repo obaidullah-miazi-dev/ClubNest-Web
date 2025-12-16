@@ -15,13 +15,13 @@ import Button from "../../../components/Button";
 import { useForm } from "react-hook-form";
 import { imageUpload } from "../../../utils";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const CreateClub = () => {
   const { user } = useContext(AuthContext);
   const [bannerPreview, setBannerPreview] = useState(null);
   const [bannerPhoto, setBannerPhoto] = useState(null);
   const axiosSecure = useAxiosSecure();
-  console.log(bannerPhoto);
 
   const {
     register,
@@ -31,7 +31,6 @@ const CreateClub = () => {
   } = useForm();
 
   const handleAddClub = async (data) => {
-    console.log(data);
     const bannerImage = await imageUpload(bannerPhoto);
     const clubData = {
       ...data,
@@ -39,19 +38,31 @@ const CreateClub = () => {
       managerEmail: user.email,
       managerName: user.displayName,
       membersCount: Number(0),
-      eventsCount: Number(0)
+      eventsCount: Number(0),
     };
     axiosSecure
       .post("/addClub", clubData)
       .then((res) => {
         if (res.data.insertedId) {
-          alert("club submitted for approval");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Club submitted for approval",
+            showConfirmButton: false,
+            timer: 2000,
+          });
           reset();
           setBannerPreview(null);
         }
       })
       .catch((err) => {
-        alert(err);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: err.message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
       });
   };
 

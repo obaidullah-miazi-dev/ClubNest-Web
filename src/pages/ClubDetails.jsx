@@ -20,6 +20,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays } from "date-fns";
 import { imageUpload } from "../utils";
+import Swal from "sweetalert2";
 
 const ClubDetails = () => {
   const { id } = useParams();
@@ -82,7 +83,13 @@ const ClubDetails = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("Your join request has been added.");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Your join request has been added.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       navigate("/dashboard/my-join-requests");
     },
   });
@@ -100,43 +107,49 @@ const ClubDetails = () => {
     joinReq(membershipData);
   };
 
-  const handleOpenModal = ()=>{
+  const handleOpenModal = () => {
     modalRef.current.showModal();
-  }
+  };
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm();
-  const queryClient = useQueryClient()
-  const {mutate:createEvent} = useMutation({
-    mutationFn: async (eventData) =>{
-      const res = axiosSecure.post('/addEvent',eventData)
-      return res.data 
+  const queryClient = useQueryClient();
+  const { mutate: createEvent } = useMutation({
+    mutationFn: async (eventData) => {
+      const res = axiosSecure.post("/addEvent", eventData);
+      return res.data;
     },
-    onSuccess: ()=>{
-      alert('event Created successfully')
-      queryClient.invalidateQueries(['club'])
-      reset()
-      setBannerPreview(null)
-      modalRef.current.close()
-    }
-  })
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Event Created successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
 
+      queryClient.invalidateQueries(["club"]);
+      reset();
+      setBannerPreview(null);
+      modalRef.current.close();
+    },
+  });
 
-  const handleCreateEvent =async (data) => {
-    const image = await imageUpload(bannerPhoto)
+  const handleCreateEvent = async (data) => {
+    const image = await imageUpload(bannerPhoto);
     const eventData = {
       ...data,
       clubId: club._id,
       eventImage: image,
       clubEmail: club.managerEmail,
       clubName: club.clubName,
-      eventDate: eventDate.toISOString()
-    }
-   createEvent(eventData)
+      eventDate: eventDate.toISOString(),
+    };
+    createEvent(eventData);
   };
 
   const formatDate = (dateString) => {

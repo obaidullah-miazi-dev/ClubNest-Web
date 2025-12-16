@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Loading from "../../../components/animation/Loading";
+import Swal from "sweetalert2";
 
 const ClubManagerApproval = () => {
   const axiosSecure = useAxiosSecure();
@@ -32,11 +33,23 @@ const ClubManagerApproval = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("status updated successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Status updated successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["getClubManager"]);
     },
     onError: (error) => {
-      alert(error.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
   });
 

@@ -23,6 +23,7 @@ import Button from "../../../components/Button";
 import { imageUpload } from "../../../utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const EventCard = ({ event, registerId }) => {
   const { user } = useContext(AuthContext);
@@ -83,7 +84,13 @@ const EventCard = ({ event, registerId }) => {
       return res.data;
     },
     onSuccess: () => {
-      alert("Event Edited Successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Event Edited Successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["events"]);
       modalRef.current.close();
     },
@@ -105,18 +112,30 @@ const EventCard = ({ event, registerId }) => {
       return res.data;
     },
     onSuccess: () => {
-      alert("deleted successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Deleted successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["events"]);
     },
   });
-  console.log(registerId);
+
   const { mutate: cancelRegister } = useMutation({
     mutationFn: async () => {
       const res = await axiosSecure.delete(`/cancelRegister/${registerId}`);
       return res.data;
     },
     onSuccess: () => {
-      alert("Registration cancelled successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Registration cancelled successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["events"]);
     },
   });
@@ -188,16 +207,18 @@ const EventCard = ({ event, registerId }) => {
           {role !== "Club-Manager" ? (
             <>
               <div className="mt-5 pt-5 flex flex-col xl:flex-row gap-3">
-                {(Location.pathname === "/" && Location.pathname === '/clubs') && role === "member" && (
-                  <>
-                    <button
-                      onClick={cancelRegister}
-                      className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
-                    >
-                      <X /> Cancel Register
-                    </button>
-                  </>
-                )}
+                {Location.pathname === "/" &&
+                  Location.pathname === "/clubs" &&
+                  role === "member" && (
+                    <>
+                      <button
+                        onClick={cancelRegister}
+                        className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
+                      >
+                        <X /> Cancel Register
+                      </button>
+                    </>
+                  )}
 
                 <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                   <button className="bg-green-500 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">

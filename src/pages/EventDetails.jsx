@@ -15,6 +15,7 @@ import {
 import Loading from "../components/animation/Loading";
 import useRole from "../hooks/useRole";
 import { AuthContext } from "../provider/authProvider";
+import Swal from "sweetalert2";
 
 const EventDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -84,14 +85,26 @@ const EventDetails = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("event Registration successfully");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Event Registration successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       queryClient.invalidateQueries(["event"]);
     },
   });
 
   const handleRegister = () => {
     if (!isJoinedClub) {
-      alert("please join first on this events club");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Please join first on this Events Club",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       navigate(`/clubs/${event.clubId}`);
     } else {
       const eventData = {
