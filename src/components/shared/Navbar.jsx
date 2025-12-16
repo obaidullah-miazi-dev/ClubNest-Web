@@ -87,7 +87,7 @@ const Navbar = () => {
         <li>Contact Us</li>
       </NavLink>
 
-      {(role === "admin" || role === "Club-Manager") && (
+      {role === "member" && (
         <NavLink
           to="/becomeClubManager"
           className="hover:text-main transition"
