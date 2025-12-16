@@ -96,7 +96,7 @@ export const router = createBrowserRouter([
         index: true,
         element: (
           <PrivateRoute>
-            <DashboardLayout />
+            <DashboardHome />
           </PrivateRoute>
         ),
       },

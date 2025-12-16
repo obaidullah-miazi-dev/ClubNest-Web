@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Calendar, Mail, User, Shield } from "lucide-react";
 import { AuthContext } from "../provider/authProvider";
+import useRole from "../hooks/useRole";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
+  const {role} = useRole()
 
   if (!user) {
     return (
@@ -27,7 +29,7 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen py-12 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header Card */}
         <div className="bg-white rounded-3xl shadow-xl">
@@ -36,13 +38,13 @@ const MyProfile = () => {
               <img
                 src={user.photoURL || "https://via.placeholder.com/150"}
                 alt={user.displayName}
-                className="w-40 h-40 rounded-full border-8 border-white shadow-2xl object-cover"
+                className="w-50 h-50 rounded-full border-8 border-white shadow-2xl object-cover"
               />
             </div>
 
             <div className="text-center sm:text-left">
-              <h1 className="text-4xl font-bold text-gray-900">
-                {user.displayName || "User"}
+              <h1 className="text-4xl font-bold text-gray-900 flex items-start gap-2 flex-col">
+                {user.displayName || "User"} <span className="text-green-800 text-xl">{role}</span>
               </h1>
               <p className="text-xl text-gray-600 mt-1">{user.email}</p>
               <div

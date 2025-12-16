@@ -11,14 +11,16 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { AuthContext } from "../../provider/authProvider";
+import useRole from "../../hooks/useRole";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
+  const { role } = useRole();
 
   const handleLogout = () => {
-    alert('are you sure')
+    alert("are you sure");
     logOut();
     setIsDropdownOpen(false);
     setIsMobileMenuOpen(false);
@@ -42,7 +44,6 @@ const Navbar = () => {
         <li>Clubs</li>
       </NavLink>
 
-
       <NavLink
         to="/events"
         className="hover:text-main transition"
@@ -51,7 +52,6 @@ const Navbar = () => {
         <li>Events</li>
       </NavLink>
 
-
       <NavLink
         to="/aboutUs"
         className="hover:text-main transition"
@@ -59,7 +59,6 @@ const Navbar = () => {
       >
         <li>About Us</li>
       </NavLink>
-
 
       <NavLink
         to="/contactUs"
@@ -110,9 +109,12 @@ const Navbar = () => {
                   alt={user.displayName}
                   className="w-10 h-10 rounded-full object-cover ring-2 ring-main/20"
                 />
-                <span className="font-medium text-gray-800">
-                  {user.displayName?.split(" ")[0]}
-                </span>
+                <div className="flex flex-col items-start">
+                  <span className="font-medium text-gray-800">
+                    {user.displayName?.split(" ")[0]}
+                  </span>
+                  <span className="text-xs">{role}</span>
+                </div>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${
                     isDropdownOpen ? "rotate-180" : ""

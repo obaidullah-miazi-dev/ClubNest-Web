@@ -9,6 +9,7 @@ import {
   Grid2x2Plus,
   HandCoins,
   History,
+  Home,
   Layers,
   LayoutDashboard,
   LayoutList,
@@ -25,7 +26,7 @@ const DashboardLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
   const { role } = useRole();
-  console.log(role);
+  // console.log(role);
 
   const handleLogout = () => {
     alert("are you sure");
@@ -84,9 +85,12 @@ const DashboardLayout = () => {
                     alt={user.displayName}
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-main/20"
                   />
-                  <span className="font-medium text-gray-800">
-                    {user.displayName?.split(" ")[0]}
-                  </span>
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium text-gray-800">
+                      {user.displayName?.split(" ")[0]}
+                    </span>
+                    <span className="text-xs">{role}</span>
+                  </div>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isDropdownOpen ? "rotate-180" : ""
@@ -144,28 +148,19 @@ const DashboardLayout = () => {
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
             {/* List item */}
-            <li>
-              <button
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Homepage"
-              >
-                {/* Home icon */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
+            <NavLink to="">
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                  data-tip="Home"
                 >
-                  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                  <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                </svg>
-                <span className="is-drawer-close:hidden">Homepage</span>
-              </button>
-            </li>
+                  <Home size={18} />
+                  <span className="is-drawer-close:hidden">
+                    Home Page
+                  </span>
+                </button>
+              </li>
+            </NavLink>
 
             {/* admin only links */}
             {role === "admin" && (
@@ -185,7 +180,6 @@ const DashboardLayout = () => {
                   </li>
                 </NavLink>
 
-
                 {/* club  approval list */}
                 <NavLink to="approve-clubs">
                   <li>
@@ -200,7 +194,6 @@ const DashboardLayout = () => {
                     </button>
                   </li>
                 </NavLink>
-
 
                 {/* manage user list */}
                 <NavLink to="manage-users">
@@ -228,14 +221,13 @@ const DashboardLayout = () => {
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="Create Club"
                     >
-                      <Grid2x2Plus size={18}/>
+                      <Grid2x2Plus size={18} />
                       <span className="is-drawer-close:hidden">
                         Create Club
                       </span>
                     </button>
                   </li>
                 </NavLink>
-
 
                 <NavLink to="my-clubs">
                   <li>
@@ -244,14 +236,10 @@ const DashboardLayout = () => {
                       data-tip="My Clubs"
                     >
                       <Layers size={18} />
-                      <span className="is-drawer-close:hidden">
-                        My Clubs
-                      </span>
+                      <span className="is-drawer-close:hidden">My Clubs</span>
                     </button>
                   </li>
                 </NavLink>
-
-
 
                 <NavLink to="my-events">
                   <li>
@@ -260,9 +248,7 @@ const DashboardLayout = () => {
                       data-tip="My Events"
                     >
                       <Calendars size={18} />
-                      <span className="is-drawer-close:hidden">
-                        My Events
-                      </span>
+                      <span className="is-drawer-close:hidden">My Events</span>
                     </button>
                   </li>
                 </NavLink>
@@ -274,27 +260,23 @@ const DashboardLayout = () => {
                       data-tip="Membership"
                     >
                       <HandCoins size={18} />
-                      <span className="is-drawer-close:hidden">
-                        Membership
-                      </span>
+                      <span className="is-drawer-close:hidden">Membership</span>
                     </button>
                   </li>
                 </NavLink>
               </>
             )}
 
-
             {/* member only links */}
-            {
-              role === 'member' && (
-                <>
+            {role === "member" && (
+              <>
                 <NavLink to="my-join-requests">
                   <li>
                     <button
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="My Join Requests"
                     >
-                     <LayoutList size={18} />
+                      <LayoutList size={18} />
                       <span className="is-drawer-close:hidden">
                         My Join Requests
                       </span>
@@ -302,14 +284,13 @@ const DashboardLayout = () => {
                   </li>
                 </NavLink>
 
-
                 <NavLink to="joined-clubs">
                   <li>
                     <button
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="Joined Clubs"
                     >
-                     <CopyCheck size={18} />
+                      <CopyCheck size={18} />
                       <span className="is-drawer-close:hidden">
                         Joined Clubs
                       </span>
@@ -317,14 +298,13 @@ const DashboardLayout = () => {
                   </li>
                 </NavLink>
 
-
                 <NavLink to="joined-events">
                   <li>
                     <button
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="Joined Events"
                     >
-                     <Calendars size={18} />
+                      <Calendars size={18} />
                       <span className="is-drawer-close:hidden">
                         Joined Events
                       </span>
@@ -338,17 +318,15 @@ const DashboardLayout = () => {
                       className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
                       data-tip="Payment History"
                     >
-                     <History size={18} />
+                      <History size={18} />
                       <span className="is-drawer-close:hidden">
                         Payment History
                       </span>
                     </button>
                   </li>
                 </NavLink>
-                
-                </>
-              )
-            }
+              </>
+            )}
 
             {/* List item */}
             <li>
