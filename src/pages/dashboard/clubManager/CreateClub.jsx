@@ -294,7 +294,7 @@ const CreateClub = () => {
             </div>
 
             {/*  Info */}
-            <div className="bg-linear-to-r from-main/5 to-purple-50 rounded-2xl p-6 space-y-4 border border-main/10">
+            <div className="hidden md:block bg-linear-to-r from-main/5 to-purple-50 rounded-2xl p-6 space-y-4 border border-main/10">
               <div className="flex items-center gap-4 text-gray-700">
                 <Calendar className="w-5 h-5 text-main" />
                 <span>
@@ -320,10 +320,10 @@ const CreateClub = () => {
             <div className="text-center pt-8">
               <Button
                 type="submit"
-                className="px-16 py-6 text-xl font-bold rounded-full bg-main hover:bg-main/90 text-white shadow-2xl hover:shadow-main/30 transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 mx-auto"
+                className="md:px-16 md:py-6 px-8 py-4 md:text-xl font-bold rounded-full bg-main hover:bg-main/90 text-white shadow-2xl hover:shadow-main/30 transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 mx-auto"
               >
                 <Tag className="w-7 h-7" />
-                Submit Club for Approval
+                Submit Club
               </Button>
             </div>
           </form>

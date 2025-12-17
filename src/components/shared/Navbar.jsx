@@ -227,17 +227,17 @@ const Navbar = () => {
                       Dashboard
                     </Button>
                   </Link>
-                  <Button
+                  <button
                     onClick={handleLogout}
-                    className="w-full rounded-full bg-red-500 hover:bg-red-600 text-white"
+                    className="w-full rounded-full bg-red-500 hover:bg-red-600 text-white py-1.5"
                   >
                     Logout
-                  </Button>
+                  </button>
                 </div>
               ) : (
                 <>
                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="w-full rounded-full">Log In</Button>
+                    <Button className="w-full rounded-full mb-2">Log In</Button>
                   </Link>
                   <Link
                     to="/register"

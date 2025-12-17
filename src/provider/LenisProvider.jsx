@@ -16,6 +16,15 @@ const LenisProvider = ({ children }) => {
 
     lenisInstance = lenis;
 
+    // Wheel event ignore for modal
+    const handleWheel = (e) => {
+      const modal = document.querySelector("dialog[open]");
+      if (modal && modal.contains(e.target)) {
+        e.stopPropagation(); 
+      }
+    };
+    document.addEventListener("wheel", handleWheel, { passive: false });
+
     const raf = (time) => {
       lenis.raf(time);
       rafRef.current = requestAnimationFrame(raf);
@@ -27,6 +36,7 @@ const LenisProvider = ({ children }) => {
       cancelAnimationFrame(rafRef.current);
       lenis.destroy();
       lenisInstance = null;
+      document.removeEventListener("wheel", handleWheel);
     };
   }, []);
 
