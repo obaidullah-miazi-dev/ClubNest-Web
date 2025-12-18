@@ -56,7 +56,7 @@ const Login = () => {
       .finally(() => setLoading(false));
   };
   return (
-    <div className="min-h-screen flex py-8 md:py-12 md:px-8">
+    <div className="min-h-screen flex py-8 md:py-12 w-10/12 mx-auto">
       {/* Left Side*/}
       <div className="hidden lg:block w-1/2 bg-linear-to-br from-main to-blue-600 relative overflow-hidden rounded-4xl">
         <img

@@ -79,7 +79,7 @@ const ClubApprovalList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-11/12 mx-auto">
+      <div className="max-w-10/12 mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">

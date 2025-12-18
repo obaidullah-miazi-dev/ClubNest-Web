@@ -7,6 +7,7 @@ import ClubCard from "./ClubCard";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/animation/Loading";
+import Container from "../../../components/Container";
 
 const MyClub = () => {
   const { user } = useContext(AuthContext);
@@ -35,7 +36,7 @@ const MyClub = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-7xl mx-auto">
+      <Container>
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-6">
           <div>
@@ -106,7 +107,7 @@ const MyClub = () => {
             ))}
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 };

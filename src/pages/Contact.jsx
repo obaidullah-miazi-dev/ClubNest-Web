@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Button from "../components/Button";
 import Swal from "sweetalert2";
+import Container from "../components/Container";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -71,7 +72,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen pt-36 bg-linear-to-b from-purple-50 via-pink-50 to-white py-16 px-4">
-      <div className="max-w-7xl mx-auto">
+      <Container>
         {/* Hero Header */}
         <motion.div
           initial={{ opacity: 0, y: -40 }}
@@ -314,7 +315,7 @@ const Contact = () => {
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </Container>
     </div>
   );
 };

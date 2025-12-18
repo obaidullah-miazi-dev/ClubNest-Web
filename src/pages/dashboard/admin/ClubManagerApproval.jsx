@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Loading from "../../../components/animation/Loading";
 import Swal from "sweetalert2";
+import Container from "../../../components/Container";
 
 const ClubManagerApproval = () => {
   const axiosSecure = useAxiosSecure();
@@ -94,8 +95,8 @@ const ClubManagerApproval = () => {
   console.log(pendingManager?.length);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50 py-12">
+      <Container>
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold text-gray-900 ">
@@ -243,7 +244,7 @@ const ClubManagerApproval = () => {
             </div>
           )}
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

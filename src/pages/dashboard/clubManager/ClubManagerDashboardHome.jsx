@@ -57,8 +57,8 @@ const ClubManagerDashboardHome = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="w-11/12 mx-auto">
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="w-10/12 mx-auto">
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-main/10 rounded-full mb-6">

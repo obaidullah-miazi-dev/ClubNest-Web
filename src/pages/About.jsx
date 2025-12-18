@@ -82,7 +82,7 @@ const About = () => {
         transition={{ duration: 1 }}
         className="relative  py-24 overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
+        <div className="w-10/12 mx-auto text-center relative z-10">
           <motion.div
             variants={floatVariants}
             animate="float"
@@ -126,7 +126,7 @@ const About = () => {
         variants={containerVariants}
         className="py-20 px-4"
       >
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="w-10/12 mx-auto text-center">
           <motion.div variants={itemVariants}>
             <Target className="w-20 h-20 text-main mx-auto mb-8" />
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
@@ -148,7 +148,7 @@ const About = () => {
         variants={containerVariants}
         className="py-20 px-4"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="w-10/12 mx-auto">
           <motion.h2
             variants={itemVariants}
             className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16"

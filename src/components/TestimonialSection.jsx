@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Quote, Star, Users } from "lucide-react";
+import Container from "./Container";
 
 const TestimonialSection = () => {
   const testimonials = [
@@ -64,7 +65,7 @@ const TestimonialSection = () => {
 
   return (
     <section className="py-20 px-4 bg-linear-to-b from-purple-50 to-white overflow-hidden pt-26">
-      <div className="max-w-7xl mx-auto">
+      <Container>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -136,7 +137,7 @@ const TestimonialSection = () => {
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 };

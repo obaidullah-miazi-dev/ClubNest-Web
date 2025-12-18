@@ -15,6 +15,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import Loading from "../../../components/animation/Loading";
 import { AuthContext } from "../../../provider/authProvider";
+import Container from "../../../components/Container";
 
 const Membership = () => {
   const axiosSecure = useAxiosSecure();
@@ -103,7 +104,7 @@ const Membership = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="w-11/12 mx-auto">
+      <Container>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -315,7 +316,7 @@ const Membership = () => {
             </div>
           )}
         </motion.div>
-      </div>
+      </Container>
     </div>
   );
 };

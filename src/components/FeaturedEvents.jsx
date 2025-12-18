@@ -16,7 +16,7 @@ const FeaturedEvents = () => {
     queryKey: ["featuredEvents"],
     queryFn: async () => {
       const res = await axiosSecure.get("/getEvents");
-      return res.data.slice(0, 5);
+      return res.data.slice(0, 4);
     },
   });
 
@@ -120,7 +120,7 @@ const FeaturedEvents = () => {
         ) : (
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-10"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
           >
             {events.map((event, index) => (
               <motion.div

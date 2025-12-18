@@ -38,12 +38,11 @@ const PaymentSuccess = () => {
     }
   }, [sessionId, axiosSecure]);
 
-  console.log(paymentInfo)
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center flex flex-col gap-5 items-center">
           <div className="w-32 h-32 mx-auto mb-6">
             <Loading />
           </div>

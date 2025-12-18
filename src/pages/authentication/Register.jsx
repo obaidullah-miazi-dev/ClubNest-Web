@@ -92,7 +92,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex py-8 md:py-12 md:px-8">
+    <div className="min-h-screen flex py-8 md:py-12 w-10/12 mx-auto">
       {/*  Register Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
         <div className="max-w-md w-full space-y-8">

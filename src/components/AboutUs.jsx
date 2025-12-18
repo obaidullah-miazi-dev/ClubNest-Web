@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, HeartHandshake, Sparkles, Target, Globe, Trophy } from 'lucide-react';
+import Container from './Container';
 
 const AboutUs = () => {
   const values = [
@@ -49,7 +50,7 @@ const AboutUs = () => {
 
   return (
     <section className="py-20 px-4 bg-linear-to-t from-white to-purple-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      <Container>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -141,7 +142,7 @@ const AboutUs = () => {
           ))}
         </motion.div>
 
-      </div>
+      </Container>
     </section>
   );
 };

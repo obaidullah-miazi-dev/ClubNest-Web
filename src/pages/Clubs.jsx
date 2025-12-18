@@ -74,7 +74,7 @@ const Clubs = () => {
         variants={headerVariants}
         className="bg-white"
       >
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+        <div className="w-10/12 mx-auto px-4 py-16 text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-4">
             Discover Clubs
           </h1>
@@ -86,7 +86,7 @@ const Clubs = () => {
       </motion.div>
 
       {/* Search & Filters Section */}
-      <div className="w-11/12 mx-auto px-4 py-10">
+      <div className="w-10/12 mx-auto py-10">
         {/* Search Bar */}
         <motion.div
           initial="hidden"
@@ -134,7 +134,7 @@ const Clubs = () => {
       </div>
 
       {/* Clubs Grid */}
-      <div className="w-11/12 mx-auto px-4 pb-20">
+      <div className="w-10/12 mx-auto pb-20">
         {isLoading || isFetching ? (
           <div className="flex justify-center items-center py-20">
             <Loading />

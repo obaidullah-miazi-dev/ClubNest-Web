@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Users, Calendar, Sparkles, Trophy, HeartHandshake } from 'lucide-react';
 import { Link } from 'react-router';
 import Button from './Button';
+import Container from './Container';
 
 const GetStarted = () => {
   const steps = [
@@ -69,7 +70,7 @@ const GetStarted = () => {
 
   return (
     <section className="py-20 px-4 bg-linear-to-b from-white to-purple-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      <Container>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -153,7 +154,7 @@ const GetStarted = () => {
 
           
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 };
