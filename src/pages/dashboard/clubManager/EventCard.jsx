@@ -204,11 +204,11 @@ const EventCard = ({ event, registerId }) => {
           </div>
 
           {/* Action Buttons */}
-          {role !== "Club-Manager" ? (
+          {role === "member" ? (
             <>
               <div className="mt-5 pt-5 flex flex-col xl:flex-row gap-3">
-                {Location.pathname === "/" &&
-                  Location.pathname === "/clubs" &&
+                {(Location.pathname === "/" ||
+                  Location.pathname === "/events") ||
                   role === "member" && (
                     <>
                       <button
