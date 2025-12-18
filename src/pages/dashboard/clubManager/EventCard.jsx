@@ -176,7 +176,9 @@ const EventCard = ({ event, registerId }) => {
 
         {/* Card Body */}
         <div className="p-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-3 h-16">{eventName}</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3 h-16">
+            {eventName}
+          </h3>
 
           <p className="text-gray-600 line-clamp-2 mb-5 h-12">{description}</p>
 
@@ -204,12 +206,12 @@ const EventCard = ({ event, registerId }) => {
           </div>
 
           {/* Action Buttons */}
-          {role === "member" ? (
+          {role !== "Club-Manager" ? (
             <>
               <div className="mt-5 pt-5 flex flex-col xl:flex-row gap-3">
-                {(Location.pathname === "/" ||
-                  Location.pathname === "/events") ||
-                  role === "member" && (
+                {Location.pathname === "/" ||
+                  Location.pathname === "/events" ||
+                  (role === "member" && (
                     <>
                       <button
                         onClick={cancelRegister}
@@ -218,7 +220,7 @@ const EventCard = ({ event, registerId }) => {
                         <X /> Cancel Register
                       </button>
                     </>
-                  )}
+                  ))}
 
                 <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                   <button className="bg-green-500 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
@@ -232,8 +234,9 @@ const EventCard = ({ event, registerId }) => {
             <>
               <div className="mt-6 pt-6 border-t border-gray-100">
                 {/* edit delete button display only for club manager */}
-                {Location.pathname === "/" ||
-                (Location.pathname === "/events" && role === "Club-Manager") ? (
+                {(Location.pathname === "/" ||
+                  Location.pathname === "/events") &&
+                role === "Club-Manager" ? (
                   <NavLink to={`/eventDetails/${_id}`} className={`w-full`}>
                     <button className="bg-green-500 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer">
                       {" "}
@@ -241,7 +244,7 @@ const EventCard = ({ event, registerId }) => {
                     </button>
                   </NavLink>
                 ) : (
-                  role === "Club-Manager" && (
+                  role === "Club-Manager"  && (
                     <>
                       <div className="flex justify-between items-center gap-2 md:text-base text-sm">
                         <button
