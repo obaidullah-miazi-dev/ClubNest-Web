@@ -62,7 +62,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/clubs/:id",
-        Component: ClubDetails,
+        element: <PrivateRoute><ClubDetails /></PrivateRoute>
       },
       {
         path: "/clubs",
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/eventDetails/:id",
-        Component: EventDetails,
+        element: <PrivateRoute><EventDetails /></PrivateRoute>
       },
       {
         path: "/aboutUs",
