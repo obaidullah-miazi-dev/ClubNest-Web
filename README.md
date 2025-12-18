@@ -88,7 +88,7 @@ Repository (Backend): https://github.com/obaidullah-miazi-dev/ClubNest-Server
 
 ## Home Page of This Project
 
-![Screenshot](./src/assets/Images/clubnest-home.png)
+![Screenshot](./src/assets/ClubNest-Homepage.png)
 
 ## Technologies Used
 
