@@ -138,7 +138,19 @@ const ClubCard = ({ club }) => {
     },
   });
   const handleDelete = (id) => {
-    deleteClub(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteClub(id);
+      }
+    });
   };
 
   const formatDate = (dateString) => {
@@ -183,7 +195,9 @@ const ClubCard = ({ club }) => {
 
         {/* Card Body */}
         <div className="p-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2 h-16">{clubName}</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2 h-16">
+            {clubName}
+          </h3>
 
           <p className="text-gray-600 line-clamp-2 mb-4 h-12">{description}</p>
 

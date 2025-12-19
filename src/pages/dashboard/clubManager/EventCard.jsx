@@ -214,7 +214,21 @@ const EventCard = ({ event, registerId }) => {
                   (role === "member" && (
                     <>
                       <button
-                        onClick={cancelRegister}
+                        onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Cancel Register",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              cancelRegister();
+                            }
+                          });
+                        }}
                         className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
                       >
                         <X /> Cancel Register
@@ -244,7 +258,7 @@ const EventCard = ({ event, registerId }) => {
                     </button>
                   </NavLink>
                 ) : (
-                  role === "Club-Manager"  && (
+                  role === "Club-Manager" && (
                     <>
                       <div className="flex justify-between items-center gap-2 md:text-base text-sm">
                         <button
@@ -255,7 +269,21 @@ const EventCard = ({ event, registerId }) => {
                           <Pencil size={18} /> Edit
                         </button>
                         <button
-                          onClick={handleDelete}
+                          onClick={() => {
+                            Swal.fire({
+                              title: "Are you sure?",
+                              text: "You won't be able to revert this!",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Yes, delete it!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                handleDelete();
+                              }
+                            });
+                          }}
                           className="bg-red-600 text-white font-semibold py-2 w-full rounded-xl flex justify-center items-center gap-2 cursor-pointer"
                         >
                           {" "}
