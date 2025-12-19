@@ -77,6 +77,7 @@ const MyJoinRequests = () => {
     const clubInfo = {
       clubFee: data.clubFee,
       clubName: data.clubName,
+      clubManagerEmail: data.managerEmail,
       clubId: data.clubId,
       memberEmail: data.memberEmail,
       memberName: data.memberName,
