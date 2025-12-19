@@ -226,6 +226,21 @@ const DashboardLayout = () => {
                     </button>
                   </li>
                 </NavLink>
+
+                {/* all transaction histroy */}
+                <NavLink to="AllTransaction">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3"
+                      data-tip="All Transaction History"
+                    >
+                      <History size={18} />
+                      <span className="is-drawer-close:hidden">
+                        All Transaction History
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
               </>
             )}
 

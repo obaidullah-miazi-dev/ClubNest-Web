@@ -29,6 +29,7 @@ import PrivateRoute from "../provider/PrivateRoute";
 import AdminOnlyRoute from "../provider/AdminOnlyRoute";
 import ClubManagerOnlyRoute from "../provider/ClubManagerOnlyRoute";
 import Error404 from "../components/animation/Error404";
+import AllTransactionHistroy from "../pages/dashboard/admin/AllTransactionHistroy";
 
 export const router = createBrowserRouter([
   {
@@ -62,7 +63,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/clubs/:id",
-        element: <PrivateRoute><ClubDetails /></PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <ClubDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/clubs",
@@ -74,7 +79,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/eventDetails/:id",
-        element: <PrivateRoute><EventDetails /></PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <EventDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/aboutUs",
@@ -196,6 +205,14 @@ export const router = createBrowserRouter([
           <ClubManagerOnlyRoute>
             <Membership />
           </ClubManagerOnlyRoute>
+        ),
+      },
+      {
+        path: "AllTransaction",
+        element: (
+          <AdminOnlyRoute>
+            <AllTransactionHistroy />
+          </AdminOnlyRoute>
         ),
       },
     ],
