@@ -219,7 +219,7 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <Link to="/profile" onClick={setMenuClose} className="w-full">
+                  <Link to="/myProfile" onClick={setMenuClose} className="w-full">
                     <Button className="w-full rounded-full">My Profile</Button>
                   </Link>
                   <Link to="/dashboard" onClick={setMenuClose}>
